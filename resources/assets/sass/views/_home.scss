@@ -1,0 +1,106 @@
+.home {
+    position: relative;
+    margin-top: 30px;
+    z-index: 1;
+    .row, .col {
+        margin: 0;
+        padding: 0;
+        .home-menu, .home-body {
+            height: 500px;
+        }
+
+        .home-menu {
+            padding-right: 10px;
+            .menu-header {
+                height: 133px;
+                margin-bottom: 16px;
+                padding: 10px;
+                .logo {
+                    height: 100%;
+                    width: 100%;
+                }
+            }
+            .menu-body {
+                width: 100%;
+                .menu-user-id, .menu-item-solo, .menu-item-group {
+                    padding-left: 31px;
+                }
+                .menu-user-id {
+                    height: auto;
+                    width: 100%;
+                    background-color: $feather-body-bg;
+                    padding-top: 14px;
+                    padding-bottom: 14px;
+                    border-bottom: 1px solid $feather-border;
+                    .row {
+                        margin: 0;
+                    }
+                    .user-id {
+                        font-size: 20px;
+                    }
+                    .user-role {
+                        font-size: 12px;
+                        margin-left: 3px;
+                        text-transform: uppercase;
+                    }
+                }
+                .menu-item-solo {
+                    border-bottom: 1px solid $feather-border;
+                }
+                .menu-item-solo, .menu-item-group-item {
+                    height: 50px;
+                    width: 100%;
+                    padding-top: 12px;
+                    padding-bottom: 12px;
+                    span {
+                        font-size: 16px;
+                    }
+                }
+                .menu-item-group {
+                    border-bottom: 1px solid $feather-border;
+                    .menu-item-group-title {
+                        height: 40px;
+                        width: 100%;
+                        padding-top: 15px;
+                        span {
+                            color: $feather-font-gray;
+                            font-size: 12px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .home-body {
+            padding-left: 10px;
+            .body-header, .body-content {
+                padding: 22px 22px;
+            }
+            .body-header {
+                height: auto;
+                width: 100%;
+                margin-bottom: 18px;
+                span {
+                    font-size: 16px;
+                }
+            }
+            .body-content {
+                .body-content-item {
+                    border-bottom: 1.2px solid $feather-border;
+                    margin-bottom: 11px;
+                    .body-content-item-title {
+                        padding-bottom: 12px;
+                        span {
+                            font-size: 12px;
+                            color: $feather-font-gray;
+                        }
+                    }
+                    .body-content-item-body {
+                        padding-bottom: 11px;
+                        font-size: 14px;
+                    }
+                }
+            }
+        }
+    }
+}

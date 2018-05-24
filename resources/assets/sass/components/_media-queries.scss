@@ -1,0 +1,13 @@
+/*********************
+  Feather Media Query Classes
+**********************/
+
+@media only screen and (max-width: 992px) {
+
+}
+
+@media only screen and (max-width: 600px) {
+    .home .row .home-body, .home .col .home-body {
+        padding-left: 0;
+    }
+}

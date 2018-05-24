@@ -1,0 +1,23 @@
+.login-container {
+    height: 450px;
+    width: 330px;
+    padding: 5px;
+    position: absolute;
+    left:0;
+    right:0;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top: 66px;
+    form {
+        position: relative;
+        z-index: 1;
+    }
+    .logo-container {
+        height: 158.29px;
+        width: 100%;
+    }
+    p {
+        font-size: 24px;
+        text-align: center;
+    }
+}

@@ -1,0 +1,68 @@
+nav {
+    height: 60px;
+}
+.sidenav-overlay {
+    z-index: inherit;
+    background-color: transparent;
+}
+
+.sidenav {
+    .menu-nav {
+        height: 155px;
+        padding: 10px;
+        background-color: $feather-primary-color;
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+        .logo {
+            height: 100%;
+            width: 100%;
+        }
+    }
+    .menu-user-id, .menu-item-solo, .menu-item-group {
+        padding-left: 31px;
+    }
+    .menu-user-id {
+        height: auto;
+        width: 100%;
+        background-color: $feather-body-bg;
+        padding-left: 31px;
+        padding-top: 14px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid $feather-border;
+        border-top: 1px solid $feather-border;
+        .row {
+            margin: 0;
+        }
+        .user-id {
+            font-size: 20px;
+        }
+        .user-role {
+            font-size: 12px;
+            margin-left: 3px;
+            text-transform: uppercase;
+        }
+    }
+    .menu-item-solo {
+        border-bottom: 1px solid $feather-border;
+    }
+    .menu-item-solo, .menu-item-group-item {
+        height: 50px;
+        width: 100%;
+        padding-top: 12px;
+        padding-bottom: 12px;
+        span {
+            font-size: 16px;
+        }
+    }
+    .menu-item-group {
+        border-bottom: 1px solid $feather-border;
+        .menu-item-group-title {
+            height: 40px;
+            width: 100%;
+            padding-top: 15px;
+            span {
+                color: $feather-font-gray;
+                font-size: 12px;
+            }
+        }
+    }
+}
