@@ -1,16 +1,16 @@
 @extends('layouts.home')
 @section('home_content')
     <div class="body-header feather-card">
-        <span>Faculty</span>
+        <span>Faculties</span>
     </div>
     <div class="body-content feather-card">
         <div class="body-content-item">
             <div class="body-content-item-title">
-                <span>Create a new faculty</span>
+                <span>Edit</span>
             </div>
             <div class="body-content-item-body">
-                {!! Form::open(['route' => 'subjects.store']) !!}
-                    @include('subjects.partials.form')
+                {!! Form::model($role, ['route' => ['roles.update', $role->id], 'method' => 'PUT']) !!}
+                    @include('roles.partials.form')
                 {!! Form::close() !!}
             </div>
         </div>

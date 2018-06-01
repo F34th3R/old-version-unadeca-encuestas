@@ -18,18 +18,18 @@
                     @endif
                     @if ($errors->has('code'))
                         <span class="help-block">
-                    <strong>{{ $errors->first('code') }}</strong>
-                </span>
+                            <strong>{{ $errors->first('code') }}</strong>
+                        </span>
                     @endif
                     @if ($errors->has('email'))
                         <span class="help-block">
-                    <strong>{{ $errors->first('email') }}</strong>
-                </span>
+                            <strong>{{ $errors->first('email') }}</strong>
+                        </span>
                     @endif
                     @if ($errors->has('password'))
                         <span class="help-block">
-                    <strong>{{ $errors->first('password') }}</strong>
-                </span>
+                            <strong>{{ $errors->first('password') }}</strong>
+                        </span>
                     @endif
                 </div>
                 <form class="form-horizontal" method="POST" action="{{ route('users.store') }}">

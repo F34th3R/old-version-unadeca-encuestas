@@ -50,15 +50,43 @@
         </div>
         <div class="body-content-item">
             <div class="body-content-item-title">
-                <span>Questions</span>
+                <span>Subjects</span>
             </div>
             <div class="body-content-item-body">
                 <ul class="collection">
-                    @foreach($questions as $question)
-                            <li class="collection-item">{{$question->question}}</li>
+                    @foreach($polls as $poll)
+                        @foreach($poll->subjects as $subject)
+                            <li class="collection-item">{{$subject->name}}</li>
+                        @endforeach
                     @endforeach
                 </ul>
             </div>
         </div>
+        <div class="body-content-item">
+            <div class="body-content-item-title">
+                <span>Questions</span>
+            </div>
+            <div class="body-content-item-body">
+                <ul class="collection">
+                    @foreach($polls as $poll)
+                        @foreach($poll->questions as $question)
+                            <li class="collection-item">{{$question->question}}</li>
+                        @endforeach
+                    @endforeach
+                </ul>
+            </div>
+        </div>
+        {{--<div class="body-content-item">--}}
+            {{--<div class="body-content-item-title">--}}
+                {{--<span>Questions</span>--}}
+            {{--</div>--}}
+            {{--<div class="body-content-item-body">--}}
+                {{--<ul class="collection">--}}
+                    {{--@foreach($questions as $question)--}}
+                            {{--<li class="collection-item">{{$question->question}}</li>--}}
+                    {{--@endforeach--}}
+                {{--</ul>--}}
+            {{--</div>--}}
+        {{--</div>--}}
     </div>
 @endsection

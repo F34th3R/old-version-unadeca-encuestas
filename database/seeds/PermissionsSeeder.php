@@ -278,7 +278,7 @@ class PermissionsSeeder extends Seeder
         Permission::create([
             'name' => 'Create subject',
             'slug' => 'subjects.create',
-            'description' => 'Create new daily subject in the system',
+            'description' => 'Create new subject in the system',
         ]);
 //      Edit
         Permission::create([
@@ -291,6 +291,70 @@ class PermissionsSeeder extends Seeder
             'name' => 'Destroy subject',
             'slug' => 'subjects.destroy',
             'description' => 'Remove any subject from the system',
+        ]);
+
+        // Roles //
+//      Index
+        Permission::create([
+            'name' => 'Browse the roles',
+            'slug' => 'roles.index',
+            'description' => 'List and browse all system roles',
+        ]);
+//      Show
+        Permission::create([
+            'name' => 'Show role data',
+            'slug' => 'roles.show',
+            'description' => 'See in detail each roles of the system',
+        ]);
+//      Create
+        Permission::create([
+            'name' => 'Create role',
+            'slug' => 'roles.create',
+            'description' => 'Create new role in the system',
+        ]);
+//      Edit
+        Permission::create([
+            'name' => 'Edit role',
+            'slug' => 'roles.edit',
+            'description' => 'Edit any data of a role of the system',
+        ]);
+//      Destroy
+        Permission::create([
+            'name' => 'Destroy role',
+            'slug' => 'roles.destroy',
+            'description' => 'Remove any role from the system',
+        ]);
+
+        // Permissions //
+//      Index
+        Permission::create([
+            'name' => 'Browse the permissions',
+            'slug' => 'permissions.index',
+            'description' => 'List and browse all system permissions',
+        ]);
+//      Show
+        Permission::create([
+            'name' => 'Show permission data',
+            'slug' => 'permissions.show',
+            'description' => 'See in detail each permissions of the system',
+        ]);
+//      Create
+        Permission::create([
+            'name' => 'Create permission',
+            'slug' => 'permissions.create',
+            'description' => 'Create new permission in the system',
+        ]);
+//      Edit
+        Permission::create([
+            'name' => 'Edit permission',
+            'slug' => 'permissions.edit',
+            'description' => 'Edit any data of a permission of the system',
+        ]);
+//      Destroy
+        Permission::create([
+            'name' => 'Destroy permission',
+            'slug' => 'permissions.destroy',
+            'description' => 'Remove any permission from the system',
         ]);
     }
 }

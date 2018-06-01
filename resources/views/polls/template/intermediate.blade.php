@@ -36,18 +36,20 @@
                     @endempty
                 </div>
 
-                <div class="body-content-item-title">
-                    <span>Questions</span>
-                </div>
-                <div class="body-content-item-body">
-                    @foreach($questions as $question)
-                        <p>
-                            <label>
-                                {{ Form::checkbox('questions[]', $question->id, true) }}
-                                <span>{{ $question->question }}</span>
-                            </label>
-                        </p>
-                    @endforeach
+                <div class="" style="display: none">
+                    <div class="body-content-item-title">
+                        <span>Questions</span>
+                    </div>
+                    <div class="body-content-item-body">
+                        @foreach($questions as $question)
+                            <p>
+                                <label>
+                                    {{ Form::checkbox('questions[]', $question->id, true) }}
+                                    <span>{{ $question->question }}</span>
+                                </label>
+                            </p>
+                        @endforeach
+                    </div>
                 </div>
                 <div class="form-group center-align" style="margin-bottom: 20px">
                     <button type="submit" class="waves-effect waves-light btn unadeca-btn">

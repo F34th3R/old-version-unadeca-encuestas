@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Poll;
+use App\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -24,12 +25,14 @@ class PollController extends Controller
 
     public function show(Poll $poll)
     {
-        $question = DB::table('poll_question')
+        $questions = DB::table('poll_question')
             ->join('questions', 'questions.id', '=', 'poll_question.question_id')
             ->select('poll_question.*', 'questions.*')
             ->where(['poll_question.poll_id' => $poll->id])
             ->get();
-        return view('polls.show', ['poll' => $poll, 'questions' => $question]);
+        $polls = Poll::where('id', 'like', $poll->id)->get();
+//        dd($polls);
+            return view('polls.show', compact('poll', 'polls', 'questions'));
     }
 
     public function edit(Poll $poll)

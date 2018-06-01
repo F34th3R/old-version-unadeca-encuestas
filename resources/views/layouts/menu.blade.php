@@ -63,8 +63,22 @@
         </div>
     </div>
 @endcan
+@can('roles.index')
+    <div class="menu-item-solo">
+        <a href="{{ route('roles.index') }}">
+            <span>Roles</span>
+        </a>
+    </div>
+@endcan
+{{--@can('permissions.index')--}}
+    {{--<div class="menu-item-solo">--}}
+        {{--<a href="{{ route('permissions.index') }}">--}}
+            {{--<span>Permissions</span>--}}
+        {{--</a>--}}
+    {{--</div>--}}
+{{--@endcan--}}
 @can('users.index')
-    <div href="{{ route('users.index') }}" class="menu-item-solo">
+    <div class="menu-item-solo">
         <a href="{{ route('users.index') }}">
             <span>Users</span>
         </a>

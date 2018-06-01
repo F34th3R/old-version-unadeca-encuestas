@@ -55,6 +55,8 @@ class UsersSeeder extends Seeder
             'password' => bcrypt('123456'), // secret
             'remember_token' => 'G117f34th3r',
         ]);
+
+        //Roles
         Role::create([
             'name' => 'Feather',
             'slug' => 'feather',
