@@ -42,5 +42,13 @@ class User extends Authenticatable
         return $this->belongsTo('App\UserMy');
     }
 
+    public  function polls()
+    {
+        return $this->belongsToMany('App\Poll')->withTimestamps();
+    }
 
+    public function facultiess()
+    {
+        return $this->belongsToMany('App\User')->withTimestamps();
+    }
 }

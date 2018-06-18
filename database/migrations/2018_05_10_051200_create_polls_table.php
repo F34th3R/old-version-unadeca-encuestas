@@ -19,12 +19,15 @@ class CreatePollsTable extends Migration
             $table->string('titleDescription');
             $table->text('description');
             $table->text('instruction');
-            $table->date('start');
-            $table->date('end');
+//            $table->date('start');
+//            $table->date('end');
+            $table->unsignedInteger('quarters_id');
             $table->enum('isClose', ['false', 'true'])->default('false');
             $table->enum('isTemplate', ['false', 'true'])->default('false');
             $table->timestamps();
+
             $table->foreign('titles_id')->references('id')->on('titles');
+            $table->foreign('quarters_id')->references('id')->on('quarters');
         });
     }
 

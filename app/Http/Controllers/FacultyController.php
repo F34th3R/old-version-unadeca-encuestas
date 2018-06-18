@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Faculty;
 use App\Subject;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -18,16 +19,27 @@ class FacultyController extends Controller
 
     public function create()
     {
+        $user = new User;
         $subjects = Subject::get();
-        return view('faculties.create', compact('subjects'));
+//        $professors = User::where('faculties_id', 'like', $request->faculty_id)->get();
+        $professors = DB::table('role_user')
+            ->join('users', 'users.id', '=', 'role_user.user_id')
+            ->select('role_user.id', 'users.*')
+            ->where(['role_user.role_id' => 4])
+            ->get();
+        return view('faculties.create', compact('subjects', 'professors'));
     }
 
     public function store(Request $request)
     {
         $this->validate($request,[
-            'name' => 'required|string'
+            'name' => 'required|string',
+            'professors' => 'required',
         ]);
-        Faculty::create($request->all());
+        $faculty = Faculty::create([
+            'name' => $request->name,
+        ]);
+        $faculty->users->sync($request->get('professors'));
         return redirect()->route('faculties.index');
     }
 
@@ -39,7 +51,13 @@ class FacultyController extends Controller
             ->where(['faculty_subject.faculty_id' => $faculty->id])
             ->get();
         $faculties = Faculty::where('id', 'like', $faculty->id)->get();
-        return view('faculties.show', compact('faculty', 'faculties'));
+        $professors = DB::table('role_user')
+            ->join('users', 'users.id', '=', 'role_user.user_id')
+            ->select('role_user.id', 'users.*')
+            ->where(['role_user.role_id' => 4])
+            ->where('users.faculties_id', 'like', $faculty->id)
+            ->get();
+        return view('faculties.show', compact('faculty', 'faculties', 'professors'));
     }
 
     public function edit(Faculty $faculty)
@@ -59,6 +77,13 @@ class FacultyController extends Controller
             ->with('info', 'The faculty was saved successful');
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param Faculty $faculty
+     * @return \Illuminate\Http\Response
+     * @throws \Exception
+     */
     public function destroy(Faculty $faculty)
     {
         $faculty->delete();

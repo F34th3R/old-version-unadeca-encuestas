@@ -24,7 +24,7 @@
                         <th>Title</th>
                         {{--<th>Start</th>--}}
                         <th>Faculty</th>
-                        <th>End</th>
+                        <th>Cuatrimestre</th>
                         <th>Enable</th>
                         <th colspan="3">&nbsp;</th>
                     </tr>
@@ -34,13 +34,14 @@
                         @if($poll->isTemplate == 'false')
                             <tr>
                                 <td>{{ $poll->titles->title}}</td>
-                                {{--<td>{{ $poll->start }}</td>--}}
+                                {{--<td>{{ $polls->start }}</td>--}}
                                 <td>
                                     @foreach($poll->faculties as $faculty)
                                         {{ $faculty->name }}
                                     @endforeach
                                 </td>
-                                <td>{{ date("d/m/Y", strtotime($poll->end)) }}</td>
+                                {{--<td>{{ date("d/m/Y", strtotime($poll->quarters->init_date)) }}</td>--}}
+                                <td>{{ $poll->quarters->name }}</td>
                                 <td>
                                     @if($poll->isClose)
                                         <span class="green-text">{{ $poll->isClose }}</span>
@@ -73,7 +74,6 @@
                                 </td>
                             </tr>
                         @endif
-
                     @endforeach
                     </tbody>
                 </table>

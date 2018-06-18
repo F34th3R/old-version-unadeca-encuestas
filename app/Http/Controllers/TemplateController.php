@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Faculty;
 use App\Poll;
+use App\Quarter;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 class TemplateController extends Controller
 {
@@ -33,7 +36,40 @@ class TemplateController extends Controller
             ->where(['poll_question.poll_id' => $poll->id])
             ->get();
         $faculties = Faculty::get();
-        return view('polls.template.create', compact('poll', 'questions', 'faculties'));
+        $quarters = Quarter::get();
+        return view('polls.template.create', compact('poll', 'questions', 'faculties', 'quarters'));
+    }
+
+    public function intermediate(Request $request)
+    {
+        $myRequest = $request;
+//        dd($myRequest);
+        $validator = $this->validate($request, [
+            'quarters' => 'required',
+            'questions' => 'required'
+        ]);
+//        if ($validator->fails()){
+//            return Redirect::back()->withErrors($validator);
+//        }
+        $subjects = DB::table('faculty_subject')
+            ->join('subjects', 'subjects.id', '=', 'faculty_subject.subject_id')
+            ->select('faculty_subject.*', 'subjects.*')
+            ->where(['faculty_subject.faculty_id' => $request->faculty_id])
+            ->get();
+        $questions = DB::table('poll_question')
+            ->join('questions', 'questions.id', '=', 'poll_question.question_id')
+            ->select('poll_question.*', 'questions.*')
+            ->where(['poll_question.poll_id' => $request->id])
+            ->get();
+//        $professors = User::where('faculties_id', 'like', $request->faculty_id)->get();
+        $professors = DB::table('role_user')
+            ->join('users', 'users.id', '=', 'role_user.user_id')
+            ->select('role_user.id', 'users.*')
+            ->where(['role_user.role_id' => 4])
+            ->where('users.faculties_id', 'like', $request->faculty_id)
+            ->get();
+//        dd($professors);
+        return view('polls.template.intermediate', compact('myRequest', 'subjects', 'questions', 'professors'));
     }
 
     /**
@@ -45,47 +81,27 @@ class TemplateController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'start' => 'required|date',
-            'end' => 'required|date',
-            'questions' => 'required'
+//        dd($request);
+        $validator = $this->validate($request, [
+            'subjects' => 'required',
+            'professors' => 'required',
         ]);
+//        if ($validator->fails()){
+//            return Redirect::back()->withErrors($validator);
+//        }
         $poll = Poll::create([
             'titles_id' => $request->titles_id,
             'titleDescription' => $request->titleDescription,
             'description' => $request->description,
             'instruction' => $request->instruction,
-            'start' => $request->start,
-            'end' => $request->end,
+            'quarters_id' => $request->quarters,
             'isClose' => $request->isClose,
         ]);
         $poll->questions()->sync($request->get('questions'));
         $poll->faculties()->sync($request->get('faculty_id'));
         $poll->subjects()->sync($request->get('subjects'));
+        $poll->professors()->sync($request->get('professors'));
         return redirect()->route('polls.index');
-    }
-
-    public function intermediate(Request $request)
-    {
-        $myRequest = $request;
-//        dd($myRequest);
-        $this->validate($request, [
-            'start' => 'required|date',
-            'end' => 'required|date',
-            'questions' => 'required'
-        ]);
-        $subjects = DB::table('faculty_subject')
-            ->join('subjects', 'subjects.id', '=', 'faculty_subject.subject_id')
-            ->select('faculty_subject.*', 'subjects.*')
-            ->where(['faculty_subject.faculty_id' => $request->faculty_id])
-            ->get();
-        $questions = DB::table('poll_question')
-            ->join('questions', 'questions.id', '=', 'poll_question.question_id')
-            ->select('poll_question.*', 'questions.*')
-            ->where(['poll_question.poll_id' => $request->id])
-            ->get();
-//        dd($subjects);
-        return view('polls.template.intermediate', compact('myRequest', 'subjects', 'questions'));
     }
 
     /**

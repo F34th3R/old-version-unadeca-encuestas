@@ -20,7 +20,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {{--@foreach($poll->subjects as $subject)--}}
+                    {{--@foreach($polls->subjects as $subject)--}}
                         {{--{{ $subject->name }}--}}
                     {{--@endforeach--}}
 

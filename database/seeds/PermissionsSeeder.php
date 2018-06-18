@@ -15,90 +15,90 @@ class PermissionsSeeder extends Seeder
     {
         // Admin //
         Permission::create([
-            'name' => 'Admin',
+            'name' => 'Administrador',
             'slug' => 'admin',
-            'description' => 'The power to create new things',
+            'description' => 'Con el poder de un administrador',
         ]);
         // Student //
         Permission::create([
-            'name' => 'Student',
+            'name' => 'Estudiante',
             'slug' => 'student',
-            'description' => '',
+            'description' => 'Con la habilidad de ser un estudiante',
         ]);
         // Professor //
         Permission::create([
-            'name' => 'Professor',
+            'name' => 'Profesor',
             'slug' => 'professor',
-            'description' => '',
+            'description' => 'Con la habilidad de ser un profesor',
         ]);
         // Guest //
         Permission::create([
-            'name' => 'Guest',
+            'name' => 'Huésped',
             'slug' => 'guest',
-            'description' => '',
+            'description' => 'Con la habilidad de ser un profesor',
         ]);
         // Users //
 //      Index
         Permission::create([
-            'name' => 'Browse the users',
+            'name' => 'Navega por los Usuarios',
             'slug' => 'users.index',
-            'description' => 'List and browse all system users',
+            'description' => 'Lista y navega por todos los usuarios del sistema',
         ]);
 //      Show
         Permission::create([
-            'name' => 'Show user data',
+            'name' => 'Muestra los datos de los Usuarios',
             'slug' => 'users.show',
-            'description' => 'See in detail each user of the system',
+            'description' => 'Muestra los datos de cada usuario del sistema ',
         ]);
 //      Create
         Permission::create([
-            'name' => 'Create users',
+            'name' => 'Crear Usuarios',
             'slug' => 'users.create',
-            'description' => 'Create new users in the system',
+            'description' => 'Crea nuevos usuarios en el sistema',
         ]);
 //      Edit
         Permission::create([
-            'name' => 'Edit users',
+            'name' => 'Editar Usuarios',
             'slug' => 'users.edit',
-            'description' => 'Edit any data of a user of the system',
+            'description' => 'Edita cualquier dato de usuario en el sistema',
         ]);
 //      Destroy
         Permission::create([
-            'name' => 'Destroy users',
+            'name' => 'Eliminar Usuarios',
             'slug' => 'users.destroy',
-            'description' => 'Remove any user from the system',
+            'description' => 'Elimina cualquier usuario en el sistema',
         ]);
 
         // Titles //
 //      Index
         Permission::create([
-            'name' => 'Browse the title of polls',
+            'name' => 'Navega los títulos de cada encuesta',
             'slug' => 'titles.index',
-            'description' => 'List and browse all system title of polls',
+            'description' => 'Lista y navega por todos los título del sistema',
         ]);
 //      Show
         Permission::create([
-            'name' => 'Show title of polls data',
+            'name' => 'Muestra los datos de títulos de cada encuesta',
             'slug' => 'titles.show',
-            'description' => 'See in detail each title of polls of the system',
+            'description' => 'Muestra los datos de cada título de encuesta del sistema',
         ]);
 //      Create
         Permission::create([
-            'name' => 'Create titles of polls',
+            'name' => 'Crea títulos de encuesta',
             'slug' => 'titles.create',
-            'description' => 'Create new titles of polls in the system',
+            'description' => 'Crea nuevos títulos de encuesta en el sistema',
         ]);
 //      Edit
         Permission::create([
-            'name' => 'Edit titles of polls',
+            'name' => 'Edita los títulos de encuestas',
             'slug' => 'titles.edit',
-            'description' => 'Edit any data of a title of polls of the system',
+            'description' => 'Edita cualquier dato del títulos de encuesta en el sistema',
         ]);
 //      Destroy
         Permission::create([
-            'name' => 'Destroy titles of polls',
+            'name' => 'Elimina títulos de encuesta',
             'slug' => 'titles.destroy',
-            'description' => 'Remove any title of polls from the system',
+            'description' => 'Elimina cualquier título de encuesta en el sistema',
         ]);
 
         // Questions //
@@ -136,15 +136,15 @@ class PermissionsSeeder extends Seeder
         // Polls //
 //      Index
         Permission::create([
-            'name' => 'Browse the poll',
+            'name' => 'Browse the polls',
             'slug' => 'polls.index',
             'description' => 'List and browse all system polls',
         ]);
 //      Show
         Permission::create([
-            'name' => 'Show poll data',
+            'name' => 'Show polls data',
             'slug' => 'polls.show',
-            'description' => 'See in detail each poll of the system',
+            'description' => 'See in detail each polls of the system',
         ]);
 //      Create
         Permission::create([
@@ -156,7 +156,7 @@ class PermissionsSeeder extends Seeder
         Permission::create([
             'name' => 'Edit polls',
             'slug' => 'polls.edit',
-            'description' => 'Edit any data of a poll of the system',
+            'description' => 'Edit any data of a polls of the system',
         ]);
 //      Destroy
         Permission::create([
@@ -354,6 +354,70 @@ class PermissionsSeeder extends Seeder
         Permission::create([
             'name' => 'Destroy permission',
             'slug' => 'permissions.destroy',
+            'description' => 'Remove any permission from the system',
+        ]);
+
+        // Items (rubros) //
+//      Index
+        Permission::create([
+            'name' => 'Browse the permissions',
+            'slug' => 'rubros.index',
+            'description' => 'List and browse all system permissions',
+        ]);
+//      Show
+        Permission::create([
+            'name' => 'Show permission data',
+            'slug' => 'rubros.show',
+            'description' => 'See in detail each permissions of the system',
+        ]);
+//      Create
+        Permission::create([
+            'name' => 'Create permission',
+            'slug' => 'rubros.create',
+            'description' => 'Create new permission in the system',
+        ]);
+//      Edit
+        Permission::create([
+            'name' => 'Edit permission',
+            'slug' => 'rubros.edit',
+            'description' => 'Edit any data of a permission of the system',
+        ]);
+//      Destroy
+        Permission::create([
+            'name' => 'Destroy permission',
+            'slug' => 'rubros.destroy',
+            'description' => 'Remove any permission from the system',
+        ]);
+
+        // Quarters (Cuatrimestres) //
+//      Index
+        Permission::create([
+            'name' => 'Browse the permissions',
+            'slug' => 'quarters.index',
+            'description' => 'List and browse all system permissions',
+        ]);
+//      Show
+        Permission::create([
+            'name' => 'Show permission data',
+            'slug' => 'quarters.show',
+            'description' => 'See in detail each permissions of the system',
+        ]);
+//      Create
+        Permission::create([
+            'name' => 'Create permission',
+            'slug' => 'quarters.create',
+            'description' => 'Create new permission in the system',
+        ]);
+//      Edit
+        Permission::create([
+            'name' => 'Edit permission',
+            'slug' => 'quarters.edit',
+            'description' => 'Edit any data of a permission of the system',
+        ]);
+//      Destroy
+        Permission::create([
+            'name' => 'Destroy permission',
+            'slug' => 'quarters.destroy',
             'description' => 'Remove any permission from the system',
         ]);
     }

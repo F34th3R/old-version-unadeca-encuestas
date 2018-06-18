@@ -25,12 +25,14 @@
                 <p>{{ $poll->instruction }}</p>
             </div>
             <div class="body-content-item-title">
-                <span>Start date:</span>
-                <p>{{ $poll->start }}</p>
+                <span>Cuatrimestre:</span>
+                <p>{{ $poll->quarters->name }} <span>({{$poll->quarters->init_date}} - {{$poll->quarters->end_date}})</span></p>
             </div>
             <div class="body-content-item-title">
-                <span>End Date:</span>
-                <p>{{ $poll->end }}</p>
+                <span>Facultad:</span>
+                @foreach($poll->faculties as $faculty)
+                    <p>{{ $faculty->name }}</p>
+                @endforeach
             </div>
             <div class="body-content-item-title">
                 <span>Enable:</span>
@@ -44,13 +46,24 @@
                         </p>
                 @endif
             </div>
+        </div>
+        <div class="body-content-item">
+            <div class="body-content-item-title">
+                <span>Profesores</span>
+            </div>
             <div class="body-content-item-body">
-
+                <ul class="collection">
+                    @foreach($poll->professors as $professor)
+                        <li class="collection-item">{{$professor->name}}</li>
+                        {{--@foreach($poll->professors as$professor)--}}
+                        {{--@endforeach--}}
+                    @endforeach
+                </ul>
             </div>
         </div>
         <div class="body-content-item">
             <div class="body-content-item-title">
-                <span>Subjects</span>
+                <span>Materias</span>
             </div>
             <div class="body-content-item-body">
                 <ul class="collection">
@@ -64,7 +77,7 @@
         </div>
         <div class="body-content-item">
             <div class="body-content-item-title">
-                <span>Questions</span>
+                <span>Preguntas</span>
             </div>
             <div class="body-content-item-body">
                 <ul class="collection">

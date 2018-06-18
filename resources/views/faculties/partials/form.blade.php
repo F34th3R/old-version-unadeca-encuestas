@@ -4,8 +4,22 @@
     </label>
     {{ Form::text('name', null, ['class' => 'active validate form-control'])}}
 </div>
+
+{{--<div class="input-field form-group">--}}
+    {{--<span>Lista de profesores</span>--}}
+    {{--@foreach($professors as $professor)--}}
+        {{--<p>--}}
+            {{--<label>--}}
+                {{--{{ Form::checkbox('professors[]', $professor->id, null) }}--}}
+
+                {{--<span>{{ $professor->name }}</span>--}}
+            {{--</label>--}}
+        {{--</p>--}}
+    {{--@endforeach--}}
+{{--</div>--}}
+
 <div class="input-field form-group">
-    <h6>List of Subjects</h6>
+    <span>List of Subjects</span>
     @foreach($subjects as $subject)
         <p>
             <label>

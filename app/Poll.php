@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Poll extends Model
 {
     protected $table = "polls";
-    protected $fillable = ['titles_id', 'titleDescription', 'description', 'instruction', 'start', 'end', 'isClose', 'isModel'];
+    protected $fillable = ['titles_id', 'titleDescription', 'description', 'instruction', 'quarters_id', 'isClose', 'isModel'];
 
     public function titles() {
         return $this->belongsTo('App\Title');
@@ -26,5 +26,15 @@ class Poll extends Model
     public function subjects()
     {
         return $this->belongsToMany('App\Subject')->withTimestamps();
+    }
+
+    public function quarters()
+    {
+        return $this->belongsTo('App\Quarter');
+    }
+
+    public  function professors()
+    {
+        return $this->belongsToMany('App\User')->withTimestamps();
     }
 }

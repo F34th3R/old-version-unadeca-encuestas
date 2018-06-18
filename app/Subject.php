@@ -12,7 +12,7 @@ class Subject extends Model
     public function faculties()
     {
 //        return $this->belongsToMany('App\Faculty', 'faculty_subject', 'id', 'id');
-        return $this->belongsToMany('App\Faculty')->withTimestamps();;
+        return $this->belongsToMany('App\Faculty')->withTimestamps();
     }
 
     public function users()

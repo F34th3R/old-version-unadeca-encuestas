@@ -22,13 +22,27 @@
                 </a>
             </div>
         @endcan
-        @can('titles.index')
+        @can('rubros.index')
             <div class="menu-item-group-item">
-                <a href="{{ route('titles.index') }}">
-                    <span>Type of polls</span>
+                <a href="{{ route('rubros.index') }}">
+                    <span>Rubros</span>
                 </a>
             </div>
         @endcan
+        @can('quarters.index')
+            <div class="menu-item-group-item">
+                <a href="{{ route('quarters.index') }}">
+                    <span>Cuatrimestres</span>
+                </a>
+            </div>
+        @endcan
+        {{--@can('titles.index')--}}
+            {{--<div class="menu-item-group-item">--}}
+                {{--<a href="{{ route('titles.index') }}">--}}
+                    {{--<span>Type of polls</span>--}}
+                {{--</a>--}}
+            {{--</div>--}}
+        {{--@endcan--}}
         @can('questions.index')
             <div class="menu-item-group-item">
                 <a href="{{ route('questions.index') }}">

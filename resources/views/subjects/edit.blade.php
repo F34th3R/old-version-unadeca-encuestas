@@ -9,7 +9,7 @@
                 <span>Edit</span>
             </div>
             <div class="body-content-item-body">
-                {!! Form::model($matter, ['route' => ['subjects', $matter->id], 'method' => 'PUT']) !!}
+                {!! Form::model($subject, ['route' => ['subjects.edit', $subject->id], 'method' => 'PUT']) !!}
                     @include('subjects.partials.form')
                 {!! Form::close() !!}
             </div>

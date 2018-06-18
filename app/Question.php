@@ -13,4 +13,8 @@ class Question extends Model
     {
         return $this->belongsToMany('App\Poll')->withTimestamps();
     }
+
+    public function Items(){
+        return $this->belongsToMany('App\Item')->withTimestamps();
+    }
 }

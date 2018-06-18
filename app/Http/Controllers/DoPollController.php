@@ -54,8 +54,8 @@ class DoPollController extends Controller
             ->select('poll_question.*', 'questions.*')
             ->where(['poll_question.poll_id' => $poll->id])
             ->get();
-        return view('polls.show', ['poll' => $poll, 'questions' => $question]);
-//        return view('polls.show', compact('poll'));
+        return view('polls.show', ['polls' => $poll, 'questions' => $question]);
+//        return view('polls.show', compact('polls'));
     }
 
     /**

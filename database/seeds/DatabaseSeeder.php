@@ -17,9 +17,10 @@ class DatabaseSeeder extends Seeder
              TitlesSeeder::class,
              QuestionsSeeder::class,
              QuestionsTitlesSeeder::class,
+             QuartersSeeder::class,
              PollsSeeder::class,
              PollsQuestionsSeeder::class,
-//             PollsQuestionsVotesSeeder::class,
+//             PollsQuestionsVotesSeeder::class, //
              FacultiesSeeder::class,
              MattersSeeder::class,
          ]);

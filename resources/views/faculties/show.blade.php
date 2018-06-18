@@ -21,6 +21,18 @@
         </div>
         <div class="body-content-item">
             <div class="body-content-item-title">
+                <span>Profesores</span>
+            </div>
+            <div class="body-content-item-body">
+                <ul class="collection">
+                    @foreach($professors as $professor)
+                        <li class="collection-item">{{$professor->name}}</li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
+        <div class="body-content-item">
+            <div class="body-content-item-title">
                 <span>Subjects</span>
             </div>
             <div class="body-content-item-body">
