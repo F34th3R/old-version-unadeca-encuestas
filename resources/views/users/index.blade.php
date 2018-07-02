@@ -28,32 +28,62 @@
                     <tbody>
                         @foreach($users as $user)
                             <tr>
-                                <td>{{ $user->code }}</td>
-                                <td>{{ $user->name }}</td>
-                                <td>{{ $user->email }}</td>
-                                <td>
-                                    @can('users.show')
-                                        <a href="{{ route('users.show', $user->id) }}" class="waves-effect waves-light btn btn-flat">
-                                            <i class="material-icons">assignment</i>
-                                        </a>
-                                    @endcan
-                                </td>
-                                <td>
-                                    @can('users.edit')
-                                        <a href="{{ route('users.edit', $user->id) }}" class="waves-effect waves-light btn btn-flat">
-                                            <i class="material-icons">create</i>
-                                        </a>
-                                    @endcan
-                                </td>
-                                <td>
-                                    @can('users.destroy')
-                                        <form action="{{ route('users.destroy', $user->id) }}" method="DELETE">
+                                @if($user->id == 1 || $user->id == 2 || $user->id == 3 || $user->id == 4 || $user->id == 5)
+                                    <td>{{ $user->code }}</td>
+                                    <td>{{ $user->name }}</td>
+                                    <td>{{ $user->email }}</td>
+                                    <td>
+                                        @can('users.show')
+                                            <a href="{{ route('users.show', $user->id) }}" class="waves-effect waves-light btn btn-flat">
+                                                <i class="material-icons">assignment</i>
+                                            </a>
+                                        @endcan
+                                    </td>
+                                    <td>
+                                        @can('users.edit')
+                                            <a href="{{ route('users.edit', $user->id) }}" class="waves-effect waves-light btn btn-flat">
+                                                <i class="material-icons">create</i>
+                                            </a>
+                                        @endcan
+                                    </td>
+                                    <td>
+                                        @can('users.destroy')
+                                            {!! Form::open(['route' => ['users.destroy', $user->id], 'method' => 'DELETE']) !!}
+                                            <button class="waves-effect waves-light btn btn-flat disabled">
+                                                <i class="material-icons">delete</i>
+                                            </button>
+                                            {!! Form::close() !!}
+                                        @endcan
+                                    </td>
+                                @else
+                                    <td>{{ $user->code }}</td>
+                                    <td>{{ $user->name }}</td>
+                                    <td>{{ $user->email }}</td>
+                                    <td>
+                                        @can('users.show')
+                                            <a href="{{ route('users.show', $user->id) }}" class="waves-effect waves-light btn btn-flat">
+                                                <i class="material-icons">assignment</i>
+                                            </a>
+                                        @endcan
+                                    </td>
+                                    <td>
+                                        @can('users.edit')
+                                            <a href="{{ route('users.edit', $user->id) }}" class="waves-effect waves-light btn btn-flat">
+                                                <i class="material-icons">create</i>
+                                            </a>
+                                        @endcan
+                                    </td>
+                                    <td>
+                                        @can('users.destroy')
+                                            {!! Form::open(['route' => ['users.destroy', $user->id], 'method' => 'DELETE']) !!}
                                             <button class="waves-effect waves-light btn btn-flat">
                                                 <i class="material-icons">delete</i>
                                             </button>
-                                        </form>
-                                    @endcan
-                                </td>
+                                            {!! Form::close() !!}
+                                        @endcan
+                                    </td>
+                                @endif
+
                             </tr>
                         @endforeach
                     </tbody>

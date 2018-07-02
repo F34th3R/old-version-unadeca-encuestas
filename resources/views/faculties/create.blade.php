@@ -9,6 +9,7 @@
                 <span>Create a new faculty</span>
             </div>
             <div class="body-content-item-body">
+                @include('errors.message')
                 {!! Form::open(['route' => 'faculties.store']) !!}
                     @include('faculties.partials.form')
                 {!! Form::close() !!}

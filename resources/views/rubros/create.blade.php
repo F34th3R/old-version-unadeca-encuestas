@@ -9,6 +9,7 @@
                 <span>Crear un nuevo Rubro</span>
             </div>
             <div class="body-content-item-body">
+                @include('errors.message')
                 {!! Form::open(['route' => 'rubros.store']) !!}
                     @include('rubros.partials.form')
                 {!! Form::close() !!}

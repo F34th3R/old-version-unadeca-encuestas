@@ -23,57 +23,116 @@ class PollController extends Controller
 
     public function create(Poll $poll)
     {
-//        $questions =Question::get();
-        $questions = DB::table('poll_question')
-            ->join('questions', 'questions.id', '=', 'poll_question.question_id')
-            ->select('poll_question.*', 'questions.*')
-            ->where(['poll_question.poll_id' => $poll->id])
-            ->get();
-        $faculties = Faculty::get();
-//        $subjects = Subject::get();
-        $professor = DB::table('role_user')
-            ->join('users', 'users.id', '=', 'role_user.user_id')
-            ->select('role_user.*', 'users.id')
-            ->where(['role_user.role_id' => 4 ])
-            ->get();
-        $subjects = DB::table('faculty_subject')
-            ->join('subjects', 'subjects.id', '=', 'faculty_subject.subject_id')
-            ->select('faculty_subject.*', 'subjects.*')
-            ->where(['faculty_subject.faculty_id' => 2])
-            ->get();
-        $quarters = DB::table('quarters')->get();
-        $items = Item::get();
-
-//        dd($quarters);
-
-        return view('polls.create', compact('poll','questions', 'faculties', 'subjects', 'professor','quarters', 'items'));
-    }
-
-    public function getSubjects(Faculty $faculty)
-    {
-        $subjects = DB::table('faculty_subject')
-            ->join('subjects', 'subjects.id', '=', 'faculty_subject.subject_id')
-            ->select('faculty_subject.id', 'subjects.*')
-            ->where(['faculty_subject.faculty_id' => $faculty->id])
-            ->get();
-        return with($subjects);
-//        return $subjects;
+        $questions = Question::whereHas('polls', function ($query) use($poll) {
+            $query->where(['poll_id' => $poll->id]);
+        })->get();
+        return view('polls.create', compact('poll','questions'));
     }
 
     public function store(Request $request)
     {
+//        TODO save different types of poll according the title
+        if ($request->titlesid == 1) {
+            $poll = Poll::create([
+                'titles_id' => $request->titlesid,
+                'titleDescription' => $request->titleDescription,
+                'description' => $request->description,
+                'instruction' => $request->instruction,
+                'quarters_id' => $request->quartersid,
+                'isClose' => $request->isClose,
+            ]);
+            $poll->questions()->sync($request->get('questions'));
+            $poll->faculties()->sync($request->get('faculties'));
+            $poll->subjects()->sync($request->get('subjects'));
+            $poll->professors()->sync($request->get('professors'));
+            return $poll;
+        }
+//        TODO : seg[un el titulo se va a guardar de formas diferentes.
+        if ($request->titlesid == 2) {
+            $poll = Poll::create([
+                'titles_id' => $request->titlesid,
+                'titleDescription' => $request->titleDescription,
+                'description' => $request->description,
+                'instruction' => $request->instruction,
+                'quarters_id' => $request->quartersid,
+                'isClose' => $request->isClose,
+            ]);
+            $poll->questions()->sync($request->get('questions'));
+            $poll->faculties()->sync($request->get('faculties'));
+            $poll->subjects()->sync($request->get('subjects'));
+            $poll->professors()->sync($request->get('professors'));
+            return $poll;
+        }
+        if ($request->titlesid == 3) {
+            $poll = Poll::create([
+                'titles_id' => $request->titlesid,
+                'titleDescription' => $request->titleDescription,
+                'description' => $request->description,
+                'instruction' => $request->instruction,
+                'quarters_id' => $request->quartersid,
+                'isClose' => $request->isClose,
+            ]);
+            $poll->questions()->sync($request->get('questions'));
+            $poll->faculties()->sync($request->get('faculties'));
+            $poll->subjects()->sync($request->get('subjects'));
+            $poll->professors()->sync($request->get('professors'));
+            return $poll;
+        }
+        if ($request->titlesid == 4) {
+            $poll = Poll::create([
+                'titles_id' => $request->titlesid,
+                'titleDescription' => $request->titleDescription,
+                'description' => $request->description,
+                'instruction' => $request->instruction,
+                'quarters_id' => $request->quartersid,
+                'isClose' => $request->isClose,
+            ]);
+            $poll->questions()->sync($request->get('questions'));
+            $poll->faculties()->sync($request->get('faculties'));
+            $poll->subjects()->sync($request->get('subjects'));
+            $poll->professors()->sync($request->get('professors'));
+            return $poll;
+        }
+        if ($request->titlesid == 5) {
+            $poll = Poll::create([
+                'titles_id' => $request->titlesid,
+                'titleDescription' => $request->titleDescription,
+                'description' => $request->description,
+                'instruction' => $request->instruction,
+                'quarters_id' => $request->quartersid,
+                'isClose' => $request->isClose,
+            ]);
+            $poll->questions()->sync($request->get('questions'));
+            $poll->faculties()->sync($request->get('faculties'));
+            $poll->subjects()->sync($request->get('subjects'));
+            $poll->professors()->sync($request->get('professors'));
+            return $poll;
+        }
+        else {
+            $poll = Poll::create([
+                'titles_id' => $request->titlesid,
+                'titleDescription' => $request->titleDescription,
+                'description' => $request->description,
+                'instruction' => $request->instruction,
+                'quarters_id' => $request->quartersid,
+                'isClose' => $request->isClose,
+            ]);
+            $poll->questions()->sync($request->get('questions'));
+            $poll->faculties()->sync($request->get('faculties'));
+            $poll->subjects()->sync($request->get('subjects'));
+            $poll->professors()->sync($request->get('professors'));
+            return $poll;
+        }
+
     }
 
     public function show(Poll $poll)
     {
-        $questions = DB::table('poll_question')
-            ->join('questions', 'questions.id', '=', 'poll_question.question_id')
-            ->select('poll_question.*', 'questions.*')
-            ->where(['poll_question.poll_id' => $poll->id])
-            ->get();
+        $questions = Question::whereHas('polls', function ($query) use($poll) {
+            $query->where(['poll_id' => $poll->id]);
+        })->get();
         $polls = Poll::where('id', 'like', $poll->id)->get();
-//        dd($polls);
-            return view('polls.show', compact('poll', 'polls', 'questions'));
+        return view('polls.show', compact('poll', 'polls', 'questions'));
     }
 
     public function edit(Poll $poll)

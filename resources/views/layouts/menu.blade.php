@@ -65,9 +65,9 @@
             <span>Polls</span>
         </div>
         <div class="menu-item-group-item">
-            <a href="{{ route('do.polls') }}">
-                <span>Subjects polls</span>
-            </a>
+            {{--<a href="{{ route('do.polls') }}">--}}
+                {{--<span>Subjects polls</span>--}}
+            {{--</a>--}}
         </div>
         <div class="menu-item-group-item">
             <span>General polls</span>

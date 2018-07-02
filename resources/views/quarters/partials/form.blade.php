@@ -12,8 +12,34 @@
     {{ Form::text('end_date', null, ['class' => 'datepicker'])}}
     <label for="start">Fecha de final</label>
 </div>
+
 <div class="form-group center-align">
-    <button type="submit" class="waves-effect waves-light btn unadeca-btn">
-        Guardar
-    </button>
+    @if(Route::current()->getName() == 'quarters.create')
+        <div class="row">
+            <div class="col s6 right-align" style="padding-right: 10px">
+                <a href="{{ route('quarters.index') }}" class="waves-effect waves-light btn unadeca-btn">
+                    Atrás
+                </a>
+            </div>
+            <div class="col s6 left-align" style="padding-left: 10px">
+                <button type="submit" class="waves-effect waves-light btn unadeca-btn">
+                    Guardar
+                </button>
+            </div>
+        </div>
+    @endif
+    @if(Route::current()->getName() == 'quarters.edit')
+        <div class="row">
+            <div class="col s6 right-align" style="padding-right: 10px">
+                <a href="{{ route('quarters.show', $quarter->id) }}" class="waves-effect waves-light btn unadeca-btn">
+                    Atrás
+                </a>
+            </div>
+            <div class="col s6 left-align" style="padding-left: 10px">
+                <button type="submit" class="waves-effect waves-light btn unadeca-btn">
+                    Guardar
+                </button>
+            </div>
+        </div>
+    @endif
 </div>

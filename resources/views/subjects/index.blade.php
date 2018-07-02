@@ -1,24 +1,25 @@
 @extends('layouts.home')
 @section('home_content')
     <div class="body-header feather-card">
-        <span>Subjects</span>
+        <span>Materias</span>
     </div>
     <div class="body-content feather-card">
         <div class="body-content-item">
             <div class="body-content-item-title">
-                <span>List of all subjects</span>
+                <span>Lista de Materias</span>
                 <div class="right-align">
                     <a href="{{ route('subjects.create') }}" class="waves-effect waves-light btn btn-flat">
-                        <i class="material-icons right">add</i>Add
+                        <i class="material-icons right">add</i>Añadir
                     </a>
                 </div>
+                @include('errors.message')
             </div>
             <div class="body-content-item-body">
                 <table class="highlight responsive-table">
                     <thead>
                     <tr>
-                        <th>Code</th>
-                        <th>Name</th>
+                        <th>Código</th>
+                        <th>Nombre</th>
                         <th colspan="3">&nbsp;</th>
                     </tr>
                     </thead>
@@ -43,11 +44,9 @@
                             </td>
                             <td>
                                 @can('polls.destroy')
-                                    <form action="{{ route('subjects.destroy', $subject->id) }}" method="DELETE">
-                                        <button class="waves-effect waves-light btn btn-flat">
-                                            <i class="material-icons">delete</i>
-                                        </button>
-                                    </form>
+                                    <a href="{{ route('subjects.delete', $subject->id) }}" class="waves-effect waves-light btn btn-flat">
+                                        <i class="material-icons">delete</i>
+                                    </a>
                                 @endcan
                             </td>
                         </tr>

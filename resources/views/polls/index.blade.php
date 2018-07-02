@@ -65,11 +65,11 @@
                                 </td>
                                 <td>
                                     @can('polls.destroy')
-                                        <form action="{{ route('polls.destroy', $poll->id) }}" method="DELETE">
-                                            <button class="waves-effect waves-light btn btn-flat">
-                                                <i class="material-icons">delete</i>
-                                            </button>
-                                        </form>
+                                        {!! Form::open(['route' => ['polls.destroy', $poll->id], 'method' => 'DELETE']) !!}
+                                        <button class="waves-effect waves-light btn btn-flat">
+                                            <i class="material-icons">delete</i>
+                                        </button>
+                                        {!! Form::close() !!}
                                     @endcan
                                 </td>
                             </tr>

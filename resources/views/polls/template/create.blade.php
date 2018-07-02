@@ -6,9 +6,7 @@
     <div class="body-content feather-card">
         <div class="body-content-item">
             {{--<form action="{{ route('polls.template.store') }}" method="POST">--}}
-            @if ($errors->any())
-                {{ implode('', $errors->all('<div>:message</div>')) }}
-            @endif
+            @include('errors.message')
             <form action="{{ route('polls.template.intermediate') }}" method="POST">
                 {{ csrf_field() }}
                 <input type="hidden" name="id" value="{{ $poll->id }}">
@@ -36,15 +34,6 @@
                     <p>{{ $poll->instruction }}</p>
                     <input type="hidden" name="instruction" value="{{ $poll->instruction }}">
                 </div>
-                {{--<div class="input-field">--}}
-                    {{--<input id="start" name="start" type="text" class="datepicker">--}}
-                    {{--<label for="start">End Start</label>--}}
-                {{--</div>--}}
-                {{--<div class="input-field">--}}
-                    {{--<input id="end" name="end" type="text" class="datepicker">--}}
-                    {{--<label for="end">End Date</label>--}}
-                {{--</div>--}}
-
                 <div class="body-content-item-title">
                     <span>Cuatrimestre:</span>
                     @foreach($quarters as $quarter)

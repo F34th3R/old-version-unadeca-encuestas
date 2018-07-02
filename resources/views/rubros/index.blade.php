@@ -9,9 +9,10 @@
                 <span>Lista de Rubros</span>
                 <div class="right-align">
                     <a href="{{ route('rubros.create') }}" class="waves-effect waves-light btn btn-flat">
-                        <i class="material-icons right">add</i>Add
+                        <i class="material-icons right">add</i>Añadir
                     </a>
                 </div>
+                @include('errors.message')
             </div>
             <div class="body-content-item-body">
                 <table class="highlight responsive-table">
@@ -41,11 +42,9 @@
                             </td>
                             <td>
                                 @can('rubros.destroy')
-                                    <form action="{{ route('rubros.destroy', $rubro->id) }}" method="DELETE">
-                                        <button class="waves-effect waves-light btn btn-flat disabled">
-                                            <i class="material-icons">delete</i>
-                                        </button>
-                                    </form>
+                                    <a href="{{ route('rubros.delete', $rubro->id) }}" class="waves-effect waves-light btn btn-flat">
+                                        <i class="material-icons">delete</i>
+                                    </a>
                                 @endcan
                             </td>
                         </tr>

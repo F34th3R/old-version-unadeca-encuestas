@@ -9,9 +9,13 @@ input[type=datetime]:not(.browser-default),
 input[type=datetime-local]:not(.browser-default),
 input[type=tel]:not(.browser-default),
 input[type=number]:not(.browser-default),
-input[type=search]:not(.browser-default),
+//input[type=search]:not(.browser-default),
 textarea.materialize-textarea {
     border-bottom: 1.5px solid $feather-primary-color;
+}
+
+input[type=search]:not(.browser-default) {
+    border-bottom: 1.5px solid transparent;
 }
 
 input:not([type]):focus:not([readonly]),
@@ -25,11 +29,17 @@ input[type=datetime]:not(.browser-default):focus:not([readonly]),
 input[type=datetime-local]:not(.browser-default):focus:not([readonly]),
 input[type=tel]:not(.browser-default):focus:not([readonly]),
 input[type=number]:not(.browser-default):focus:not([readonly]),
-input[type=search]:not(.browser-default):focus:not([readonly]),
+//input[type=search]:not(.browser-default):focus:not([readonly]),
 textarea.materialize-textarea:focus:not([readonly]) {
     border-bottom: 1px solid $unadeca-secondary-color;
     -webkit-box-shadow: 0 1px 0 0 $unadeca-secondary-color;
     box-shadow: 0 1px 0 0 $unadeca-secondary-color;
+}
+
+input[type=search]:not(.browser-default):focus:not([readonly]) {
+    border-bottom: 1px solid transparent;
+    -webkit-box-shadow: 0 1px 0 0 transparent;;
+    box-shadow: 0 1px 0 0 transparent;;
 }
 
 .unadeca-btn, .unadeca-btn-small {
@@ -52,4 +62,21 @@ textarea.materialize-textarea:focus:not([readonly]) {
 
 .dropdown-content li > a, .dropdown-content li > span {
     color: $feather-primary-color;
+}
+
+.v-select {
+    background: #fff;
+}
+
+[type="radio"]:checked + span:after, [type="radio"].with-gap:checked + span:after {
+    background-color: $unadeca-secondary-color;
+}
+
+[type="radio"]:checked + span:after, [type="radio"].with-gap:checked + span:before, [type="radio"].with-gap:checked + span:after {
+    border: 2px solid $unadeca-secondary-color;
+}
+
+[type="checkbox"]:checked + span:not(.lever):before {
+    border-right: 2px solid $unadeca-secondary-color;
+    border-bottom: 2px solid $unadeca-secondary-color;
 }

@@ -41,11 +41,11 @@
                             </td>
                             <td>
                                 @can('titles.destroy')
-                                    <form action="{{ route('titles.destroy', $title->id) }}" method="DELETE">
-                                        <button class="waves-effect waves-light btn btn-flat disabled">
-                                            <i class="material-icons">delete</i>
-                                        </button>
-                                    </form>
+                                    {!! Form::open(['route' => ['titles.destroy', $title->id], 'method' => 'DELETE']) !!}
+                                    <button class="waves-effect waves-light btn btn-flat">
+                                        <i class="material-icons">delete</i>
+                                    </button>
+                                    {!! Form::close() !!}
                                 @endcan
                             </td>
                         </tr>

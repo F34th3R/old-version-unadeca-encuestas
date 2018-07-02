@@ -10,7 +10,7 @@
             </div>
             <div class="body-content-item-body">
                 {!! Form::model($faculty, ['route' => ['faculties.update', $faculty->id], 'method' => 'PUT']) !!}
-                @include('faculties.partials.form')
+                    @include('faculties.partials.form')
                 {!! Form::close() !!}
             </div>
         </div>

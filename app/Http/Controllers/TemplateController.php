@@ -5,10 +5,14 @@ namespace App\Http\Controllers;
 use App\Faculty;
 use App\Poll;
 use App\Quarter;
+use App\Question;
+use App\Subject;
 use App\User;
+use Caffeinated\Shinobi\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
 
 class TemplateController extends Controller
 {
@@ -26,15 +30,14 @@ class TemplateController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param Poll $poll
      * @return \Illuminate\Http\Response
      */
     public function create(Poll $poll)
     {
-        $questions = DB::table('poll_question')
-            ->join('questions', 'questions.id', '=', 'poll_question.question_id')
-            ->select('poll_question.*', 'questions.*')
-            ->where(['poll_question.poll_id' => $poll->id])
-            ->get();
+        $questions = Question::whereHas('polls', function ($query) use($poll) {
+            $query->where(['poll_id' => $poll->id]);
+        })->get();
         $faculties = Faculty::get();
         $quarters = Quarter::get();
         return view('polls.template.create', compact('poll', 'questions', 'faculties', 'quarters'));
@@ -43,32 +46,18 @@ class TemplateController extends Controller
     public function intermediate(Request $request)
     {
         $myRequest = $request;
-//        dd($myRequest);
-        $validator = $this->validate($request, [
-            'quarters' => 'required',
+        $this->validate($request, [
             'questions' => 'required'
         ]);
-//        if ($validator->fails()){
-//            return Redirect::back()->withErrors($validator);
-//        }
-        $subjects = DB::table('faculty_subject')
-            ->join('subjects', 'subjects.id', '=', 'faculty_subject.subject_id')
-            ->select('faculty_subject.*', 'subjects.*')
-            ->where(['faculty_subject.faculty_id' => $request->faculty_id])
-            ->get();
-        $questions = DB::table('poll_question')
-            ->join('questions', 'questions.id', '=', 'poll_question.question_id')
-            ->select('poll_question.*', 'questions.*')
-            ->where(['poll_question.poll_id' => $request->id])
-            ->get();
-//        $professors = User::where('faculties_id', 'like', $request->faculty_id)->get();
-        $professors = DB::table('role_user')
-            ->join('users', 'users.id', '=', 'role_user.user_id')
-            ->select('role_user.id', 'users.*')
-            ->where(['role_user.role_id' => 4])
-            ->where('users.faculties_id', 'like', $request->faculty_id)
-            ->get();
-//        dd($professors);
+        $subjects = Subject::whereHas('faculties', function ($query) use($request) {
+            $query->where(['faculty_id' => $request->faculty_id]);
+        })->get();
+        $questions = Question::whereHas('polls', function ($query) use($request) {
+            $query->where(['poll_id' => $request->id]);
+        })->get();
+        $professors = User::whereHas('roles', function ($query) {
+            $query->where(['role_id' => 4]);
+        })->where(['faculties_id' => $request->faculty_id])->get();
         return view('polls.template.intermediate', compact('myRequest', 'subjects', 'questions', 'professors'));
     }
 
@@ -81,14 +70,10 @@ class TemplateController extends Controller
      */
     public function store(Request $request)
     {
-//        dd($request);
-        $validator = $this->validate($request, [
+        $this->validate($request, [
             'subjects' => 'required',
             'professors' => 'required',
         ]);
-//        if ($validator->fails()){
-//            return Redirect::back()->withErrors($validator);
-//        }
         $poll = Poll::create([
             'titles_id' => $request->titles_id,
             'titleDescription' => $request->titleDescription,

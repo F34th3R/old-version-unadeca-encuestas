@@ -10,7 +10,7 @@
             </div>
             <div class="body-content-item-body">
                 {!! Form::model($item, ['route' => ['rubros.update', $item->id], 'method' => 'PUT']) !!}
-                @include('rubros.partials.form')
+                    @include('rubros.partials.form')
                 {!! Form::close() !!}
             </div>
         </div>

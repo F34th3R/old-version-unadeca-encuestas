@@ -85,16 +85,19 @@ class QuarterController extends Controller
         return redirect()->route('quarters.show', $quarter->id)->with('info', 'El cuatrimestre se actualizo correctamente');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Quarter $quarter
-     * @return \Illuminate\Http\Response
-     * @throws \Exception
-     */
+    public function delete(Quarter $quarter)
+    {
+        return view('quarters.delete', compact('quarter'));
+    }
+
     public function destroy(Quarter $quarter)
     {
-        $quarter->delete();
-        return redirect()->route('quarters.index')->with('info', 'El cuatrimestre fue eliminado exitosamente');
+        try {
+            $quarter->delete();
+        } catch (\Exception $e) {
+            return redirect()->route('quarters.show', $quarter->id)
+                ->with('error', 'No se puede eliminar esta cuatrimestre.');
+        }
+        return redirect()->route('quarters.index')->with('message', 'El cuatrimestre fue eliminado exitosamente.');
     }
 }

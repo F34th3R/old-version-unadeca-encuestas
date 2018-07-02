@@ -3,12 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Faculty;
-use App\RoleUser;
 use App\User;
-use Caffeinated\Shinobi\Models\Permission;
 use Caffeinated\Shinobi\Models\Role;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -28,11 +25,6 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function test()
-    {
-        return view('users.create');
-    }
-
     public function create()
     {
         $faculties = Faculty::get();
@@ -42,19 +34,14 @@ class UserController extends Controller
 
     public function updatePass()
     {
-        $users = DB::table('users')->get();
-
+        $users = User::get();
         for ($i = 6; $i <= count($users); $i++ ){
-            $user = DB::table('users')->select('password')->where('id', $i)->get();
-            dd($user);
-            DB::table('users')->where('id', $i)->update([
+            $user = User::select('password')->where('id',$i)->get();
+            User::where('id', $i)->update([
                 'password' => bcrypt($user->password),
             ]);
         };
         return redirect()->route('users.index');
-//        DB::table('users')->where('id')->update([
-//            'password' => bcrypt($users->password),
-//        ]);
     }
 
     /**
@@ -118,16 +105,14 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-//        $this->validate($request, [
-//            'name' => 'required|string|max:255',
-//            'code' => 'required|max:6|unique:users',
-//            'email' => 'required|string|email|max:255|unique:users',
-//            'faculties_id' => 'integer',
-//            'password' => 'string|min:6|confirmed',
-//            'roles' => 'required',
-//        ]);
-
         if (empty($request->password)) {
+            $this->validate($request, [
+                'name' => 'required|string|max:255',
+                'code' => 'required|max:6',
+                'email' => 'required|email',
+                'faculties_id' => 'integer',
+                'roles' => 'required',
+            ]);
             $user->update([
                 'name' => $request->name,
                 'code' => $request->code,
@@ -136,7 +121,16 @@ class UserController extends Controller
             ]);
         }
         else {
+            $this->validate($request, [
+                'name' => 'required|string|max:255',
+                'code' => 'required|max:6',
+                'email' => 'required|email',
+                'faculties_id' => 'integer',
+                'password' => 'string|min:6|confirmed',
+                'roles' => 'required',
+            ]);
             $user->update([
+
                 'name' => $request->name,
                 'code' => $request->code,
                 'email' => $request->email,
@@ -157,7 +151,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::find($id)->delete();
+        User::find($id)->delete();
         return back()->with('info', 'Eliminado correctamente');
     }
 }

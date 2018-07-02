@@ -15,12 +15,12 @@ class CreateItemQuestionTable extends Migration
     {
         Schema::create('item_question', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('items_id');
-            $table->unsignedInteger('questions_id');
+            $table->unsignedInteger('item_id');
+            $table->unsignedInteger('question_id');
             $table->timestamps();
 
-            $table->foreign('items_id')->references('id')->on('items');
-            $table->foreign('questions_id')->references('id')->on('questions');
+            $table->foreign('item_id')->references('id')->on('items');
+            $table->foreign('question_id')->references('id')->on('questions');
         });
     }
 

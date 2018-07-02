@@ -1,219 +1,373 @@
 <template>
-    <div class="">
-        <button class="btn btn-flat" v-on:click="getSubjects(1)">test</button>
-        <form v-on:submit.prevent="" method="POST">
-            <div class="body-content-item">
-                <div class="body-content-item-title">
-                    <span>Detalles de la encuesta</span>
-                </div>
-                <div class="body-content-item-title">
-                    <span>Titulo: </span>
-                    <p>{{title}}</p>
-                </div>
-                <div class="body-content-item-title">
-                    <span>Titulo de descripción: </span>
-                    <p>{{poll.titleDescription}}</p>
-                </div>
-                <div class="body-content-item-title">
-                    <span>Descripción: </span>
-                    <p>{{poll.description}}</p>
-                </div>
-                <div class="body-content-item-title">
-                    <span>Instrucción: </span>
-                    <p>{{poll.instruction}}</p>
-                </div>
+    <form v-on:submit.prevent="createData()" method="POST">
+        <div class="body-content-item">
+            <div class="body-content-item-title" id="errorPoll">
+                <span>Crear encuesta</span>
             </div>
-            <div class="body-content-item">
-                <div class="body-content-item-body">
-                    <div class="row">
-                        <div class="col s12 m6">
-                            <div class="body-content-item-title">
-                                <span>Escoger el cuatrimestre en que se habilitará la encuesta</span>
-                                <p v-for="quarter in quarters">
-                                    <label>
-                                        <input type="checkbox" v-model="newQuarter" :value="quarter.id" checked>
-                                        <!--{{ Form::checkbox('questions[]', $question->id, true) }}-->
-                                        <span>{{ quarter.name }}</span>
-                                    </label>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
+            <div class="col s12" v-if="isError">
             </div>
-            <div class="body-content-item">
-                <div class="body-content-item-body">
-                    <div class="row">
-                        <div class="col s12" v-if="isFaculties">
-                            <div class="body-content-item-title">
-                                <span>Escoger la escuela en que se habilitará la encuesta</span>
-                                <p v-for="faculty in faculties">
-                                    <label>
-                                        <input type="checkbox" v-model="newFaculty" :value="faculty.id" checked>
-                                        <!--{{ Form::checkbox('questions[]', $question->id, true) }}-->
-                                        <span>{{ faculty.name }}</span>
-                                    </label>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="col s12 m6" v-if="!isFaculties">
-                            <div class="body-content-item-title">
-                                <span>Escoger la materia en que se habilitará la encuesta</span>
-                                <p v-for="subject in subjects">
-                                    <label>
-                                        <input type="checkbox" v-model="newSubject" :value="subject.id" checked>
-                                        <span>{{ subject.name }}</span>
-                                    </label>
-                                </p>
-                            </div>
-                        </div>
-                        <a v-if="isFaculties" v-on:click="getSubjects(newFaculty)" class="waves-effect waves-light btn unadeca-btn">Buscar materias</a>
-                        <a v-if="!isFaculties" v-on:click="isFaculty()" class="waves-effect waves-light btn unadeca-btn">Escoger Escuelas</a>
-                    </div>
-                </div>
+
+            <div class="body-content-item-title">
+                <span>Titulo: </span>
+                <ul class="collection">
+                    <li class="collection-item">{{title}}</li>
+                </ul>
             </div>
-            <div class="body-content-item-body">
-                <div class="body-content-item-title">
-                    <span>Escoger las preguntas que aparecerán en la encuesta</span>
-                    <p v-for="question in questions">
+        </div>
+        <div class="col s12" v-if="isError">
+            <ul class="collection">
+                <li class="collection-item red-text">{{ errors }}</li>
+            </ul>
+        </div>
+        <select-quarters v-on:selectDQuarter="getQuarterId($event)" v-on:selectDQuarterEmpty="isQuarterEmpty($event)"></select-quarters>
+        <select-faculties v-on:selectDFaculty="getFacultyId($event)" v-on:selectDFacultyEmpty="isFacultyEmpty($event)" v-on:selectDSubject="getSubjectId($event)" v-on:selectDSubjectsEmpty="isSubjectEmpty($event)" v-on:selectDProfessor="getProfessorId($event)" v-on:selectDProfessorEmpty="isProfessorEmpty($event)"></select-faculties>
+
+        <div class="body-content-item">
+            <div class="body-content-item-title">
+                <span>Habilitar: </span>
+                <ul class="collection">
+                    <li class="collection-item">
                         <label>
-                            <input  type="checkbox" v-model="newQuestions" :value="question.id" checked>
-                            <!--{{ Form::checkbox('questions[]', $question->id, true) }}-->
+                            <input v-model="newClose" type="radio" :value="true" checked/>
+                            <span>Si</span>
+                        </label>
+                    </li>
+                    <li class="collection-item">
+                        <label>
+                            <input v-model="newClose" type="radio" :value="false"/>
+                            <span>No</span>
+                        </label>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="body-content-item">
+            <div class="body-content-item-title">
+                <span>Crear Modelo para otras encuestas?</span>
+                <ul class="collection">
+                    <li class="collection-item">
+                        <label>
+                            <input v-model="newModel" type="radio" :value="true" checked/>
+                            <span>Si</span>
+                        </label>
+                    </li>
+                    <li class="collection-item">
+                        <label>
+                            <input v-model="newModel" type="radio" :value="false"/>
+                            <span>No</span>
+                        </label>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="body-content-item">
+            <div class="body-content-item-title">
+                <span>Crear encuesta</span>
+            </div>
+            <div class="body-content-item-title">
+                <span>Escoger las preguntas que aparecerán en la encuesta</span>
+                <ul class="collection">
+                    <li class="collection-item" v-for="question in questions">
+                        <label>
+                            <input type="checkbox" v-model="newQuestions"  :value="question.id" checked>
                             <span>{{ question.question }}</span>
                         </label>
-                    </p>
-                </div>
+                    </li>
+                </ul>
             </div>
-            <div class="form-group center-align" style="margin-bottom: 20px">
-                <button type="submit" class="waves-effect waves-light btn unadeca-btn">
-                    Create
-                </button>
-            </div>
-        </form>
-    </div>
+        </div>
+
+        <div class="form-group center-align" style="margin-bottom: 20px">
+            <!--<a v-on:click="createData" class="waves-effect waves-light btn unadeca-btn">Test</a>-->
+            <!--<input type="submit" class="waves-effect waves-light btn unadeca-btn white-text" value="Guardar">-->
+            <button type="submit" class="waves-effect waves-light btn unadeca-btn">
+                Guardar
+            </button>
+        </div>
+    </form>
 </template>
 
 <script>
-    import axios from 'axios';
-    let myPass = "f34th3r_3117";
-    let urlQuarters = "/f34th3r/quarters/3117/" + myPass;
-    let urlProfessors = "/f34th3r/professors/3117/" + myPass;
-    let urlFaculties = "/f34th3r/faculties/3117/" + myPass;
-    let urlItems = "/f34th3r/items/3117/" + myPass;
+    import axios from 'axios'
+    import vue_select from 'vue-select'
+
+    import select_quarters from './selects/select_quarters'
+    import select_faculties from './selects/select_faculties'
+
+    let urlFeather = '/f34th3r/3117/';
+
     export default {
         name: "poll_template_create",
         props: [
             'poll',
             'title',
+            'title_id',
             'questions',
-            // 'faculties',
-            // 'subjects',
-            // 'professor',
-            // 'quarters',
-            // 'item',
         ],
+        components: {
+            'vue-select': vue_select,
+            'select-quarters': select_quarters,
+            'select-faculties': select_faculties,
+        },
         data() {
             return {
                 errors: '',
-                test: '',
-                //
+                isError: false,
+                // initial data
                 newId: this.poll.id,
                 newTitle: this.poll.titles_id,
                 newTitleDescription: this.poll.titleDescription,
                 newDescription: this.poll.description,
                 newInstruction: this.poll.instruction,
-
-                // intermediate table
-                newQuarter: [],
+                // final data
+                newQuarter: '',
                 newQuestions: [],
                 newFaculty: [],
                 newSubject: [],
                 newProfessor: [],
+                newClose: true,
 
-                // getData
-                subjects: '',
-                quarters: '',
-                faculties: '',
-                professors_id: '',
-                items: '',
-
-                // isOn
-                isOnQuarters: true,
-                isFaculties: true,
+                newModel: false,
             }
         },
+
         created() {
-            this.getData();
+            this.toArray(this.questions)
         },
         methods: {
-            isOnQuarter(){
-                this.isOnQuarters = !this.isOnQuarters;
-                if (this.isFaculties === true) {
-                    this.subjects = '';
-                }
+            getTitle() {
+                axios.post(urlFeather, {
+                    password: 'f34th3r_supreme',
+                    title: true,
+                    id: this.title_id
+                }).then(response => {
+                    console.log('test title');
+                    this.options = response.data
+                }).catch(error => {
+                    this.errors = error.data
+                });
             },
-            isFaculty(){
-                if (this.newFaculty === "") {
-                    this.newFaculty = '';
-                }else {
-                    this.isFaculties = !this.isFaculties;
-                    this.subjects = '';
-                }
-            },
-            getSubjects(id) {
-                if (this.newFaculty !== '') {
-                    this.isFaculty();
-                    this.newFaculty.forEach(e => {
-                        axios.get("/f34th3r/subjects/"+ e + "/" + myPass).then(response => {
-                            // console.log(e);
-                            console.log(Object(response.data));
-                            let data = response.data;
-                            if (this.subjects.length === 0) {
-                                this.subjects = data;
-                            }
-                            else {
-                                // let test = Object.assign(this.subjects, data);
-                                this.test = Object.create(this.subjects);
-                                this.test.data
-                            }
 
+            getQuarterId(getQuarterId) {
+                this.newQuarter = getQuarterId;
+            },
+            isQuarterEmpty(isQuarterEmpty) {
+                if (isQuarterEmpty) {
+                    this.newQuarter = [];
+                }
+            },
+
+            getFacultyId(getFacultyId) {
+                this.newFaculty = getFacultyId;
+            },
+            isFacultyEmpty(isFacultyEmpty) {
+                if (isFacultyEmpty) {
+                    this.newFaculty = [];
+                }
+            },
+
+            getSubjectId(getSubjectId) {
+                this.newSubject = getSubjectId;
+            },
+            isSubjectEmpty(isSubjectEmpty) {
+                if (isSubjectEmpty) {
+                    this.newSubject = [];
+                }
+            },
+
+            getProfessorId(getProfessorId) {
+                this.newProfessor = getProfessorId;
+            },
+            isProfessorEmpty(isProfessorEmpty) {
+                if (isProfessorEmpty) {
+                    this.newProfessor = [];
+                }
+            },
+            toArray(element) {
+                for (var key in element) {
+                    if (!element.hasOwnProperty(key)) continue;
+
+                    var obj = element[key];
+                    for (var prop in obj) {
+                        if(!obj.hasOwnProperty(prop)) continue;
+
+                        if (prop === 'id'){
+                            this.newQuestions.push(obj[prop]);
+                        }
+                    }
+                }
+            },
+            scrollInto() {
+                let elmnt = document.getElementById("errorPoll");
+                elmnt.scrollIntoView();
+            },
+            isE(value) {
+                this.errors = value;
+                if (this.isError) {
+                    this.scrollInto();
+                }
+            },
+            createData() {
+                if (this.title_id === 1){
+                    if (this.newQuarter.length !== 0 && this.newFaculty.length !== 0 && this.newSubject.length !== 0 && this.newProfessor.length !== 0) {
+                        this.isError = false;
+                        axios.post('/polls/store/', {
+                            titlesid: this.title_id,
+                            titleDescription: this.newTitleDescription,
+                            description: this.newDescription,
+                            instruction: this.newInstruction,
+                            quartersid: this.newQuarter,
+                            isClose: this.newClose,
+
+                            questions: this.newQuestions,
+                            faculties: this.newFaculty,
+                            subjects: this.newSubject,
+                            professors: this.newProfessor,
+                            model: this.newModel,
+                        }).then(response =>{
+                            window.location.replace("/polls/");
+                            // console.log(response.data);
                         }).catch(error => {
-                            this.errors = error.response;
+                            this.isError = true;
+                            console.log("no se puede completar");
+                            this.isE("No se pudo completar la acción.");
                         });
-                    });
+                    }
+                    else {
+                        this.isError = true;
+                        this.isE("Faltan datos para poder completar la encuesta");
+                    }
+
                 }
-            },
-            getData() {
-                axios.get(urlQuarters).then(response => {
-                    this.quarters = response.data;
-                });
-                axios.get(urlProfessors).then(response => {
-                    this.professors_id = response.data;
-                });
-                axios.get(urlFaculties).then(response => {
-                    this.faculties = response.data;
-                });
-                axios.get(urlItems).then(response => {
-                    this.items = response.data;
-                });
 
+                // TODO Modificar esta parte: para poder ver que tipo de encuesta es, ya que no todas las encuestas se guardan igual, as[i que se va a decidir por medio del titulo, para esto también va a cambiar la vista del Template
+                if (this.title === 2) {
+                    if (this.newQuarter.length !== 0 && this.newFaculty.length !== 0 && this.newSubject.length !== 0 && this.newProfessor.length !== 0) {
+                        this.isError = false;
+                        axios.post('/polls/store/', {
+                            titlesid: this.title_id,
+                            titleDescription: this.newTitleDescription,
+                            description: this.newDescription,
+                            instruction: this.newInstruction,
+                            quartersid: this.newQuarter,
+                            isClose: this.newClose,
 
-            },
-            // createData() {
-            //     var url = 'polls.store';
-            //     axios.post(url, {
-            //         name: this.newName,
-            //         description: this.newDescription,
-            //         instruction: this.newInstruction,
-            //     }).then(response =>{
-            //         this.getDate();
-            //         this.cleanVariables();
-            //         Materialize.toast("Nueva titulo creada con éxito", 10000, '', function () {/**/});
-            //     }).catch(error => {
-            //         Materialize.toast("Error, faltan datos!", 10000, 'rounded', function () {/**/});
-            //         this.errors = error.response.data;
-            //     });
-            // }
+                            questions: this.newQuestions,
+                            faculties: this.newFaculty,
+                            subjects: this.newSubject,
+                            professors: this.newProfessor,
+                            model: this.newModel,
+                        }).then(response =>{
+                            window.location.replace("/polls/");
+                            // console.log(response.data);
+                        }).catch(error => {
+                            this.isError = true;
+                            console.log("no se puede completar");
+                            this.isE("No se pudo completar la acción.");
+                        });
+                    }
+                    else {
+                        this.isError = true;
+                        this.isE("Faltan datos para poder completar la encuesta");
+                    }
+                }
+                if (this.title === 3) {
+                    if (this.newQuarter.length !== 0 && this.newFaculty.length !== 0 && this.newSubject.length !== 0 && this.newProfessor.length !== 0) {
+                        this.isError = false;
+                        axios.post('/polls/store/', {
+                            titlesid: this.title_id,
+                            titleDescription: this.newTitleDescription,
+                            description: this.newDescription,
+                            instruction: this.newInstruction,
+                            quartersid: this.newQuarter,
+                            isClose: this.newClose,
+
+                            questions: this.newQuestions,
+                            faculties: this.newFaculty,
+                            subjects: this.newSubject,
+                            professors: this.newProfessor,
+                            model: this.newModel,
+                        }).then(response =>{
+                            window.location.replace("/polls/");
+                            // console.log(response.data);
+                        }).catch(error => {
+                            this.isError = true;
+                            console.log("no se puede completar");
+                            this.isE("No se pudo completar la acción.");
+                        });
+                    }
+                    else {
+                        this.isError = true;
+                        this.isE("Faltan datos para poder completar la encuesta");
+                    }
+                }
+                if (this.title === 4) {
+                    if (this.newQuarter.length !== 0 && this.newFaculty.length !== 0 && this.newSubject.length !== 0 && this.newProfessor.length !== 0) {
+                        this.isError = false;
+                        axios.post('/polls/store/', {
+                            titlesid: this.title_id,
+                            titleDescription: this.newTitleDescription,
+                            description: this.newDescription,
+                            instruction: this.newInstruction,
+                            quartersid: this.newQuarter,
+                            isClose: this.newClose,
+
+                            questions: this.newQuestions,
+                            faculties: this.newFaculty,
+                            subjects: this.newSubject,
+                            professors: this.newProfessor,
+                            model: this.newModel,
+                        }).then(response =>{
+                            window.location.replace("/polls/");
+                            // console.log(response.data);
+                        }).catch(error => {
+                            this.isError = true;
+                            console.log("no se puede completar");
+                            this.isE("No se pudo completar la acción.");
+                        });
+                    }
+                    else {
+                        this.isError = true;
+                        this.isE("Faltan datos para poder completar la encuesta");
+                    }
+                }
+                if (this.title === 5) {
+                    if (this.newQuarter.length !== 0 && this.newFaculty.length !== 0 && this.newSubject.length !== 0 && this.newProfessor.length !== 0) {
+                        this.isError = false;
+                        axios.post('/polls/store/', {
+                            titlesid: this.title_id,
+                            titleDescription: this.newTitleDescription,
+                            description: this.newDescription,
+                            instruction: this.newInstruction,
+                            quartersid: this.newQuarter,
+                            isClose: this.newClose,
+
+                            questions: this.newQuestions,
+                            faculties: this.newFaculty,
+                            subjects: this.newSubject,
+                            professors: this.newProfessor,
+                            model: this.newModel,
+                        }).then(response =>{
+                            window.location.replace("/polls/");
+                            // console.log(response.data);
+                        }).catch(error => {
+                            this.isError = true;
+                            console.log("no se puede completar");
+                            this.isE("No se pudo completar la acción.");
+                        });
+                    }
+                    else {
+                        this.isError = true;
+                        this.isE("Faltan datos para poder completar la encuesta");
+                    }
+                }
+                // else {
+                //     console.log("normal")
+                // }
+            }
         },
     }
 </script>

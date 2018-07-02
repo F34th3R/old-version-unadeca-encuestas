@@ -9666,9 +9666,12 @@ input[type=datetime]:not(.browser-default),
 input[type=datetime-local]:not(.browser-default),
 input[type=tel]:not(.browser-default),
 input[type=number]:not(.browser-default),
-input[type=search]:not(.browser-default),
 textarea.materialize-textarea {
   border-bottom: 1.5px solid #002D62;
+}
+
+input[type=search]:not(.browser-default) {
+  border-bottom: 1.5px solid transparent;
 }
 
 input:not([type]):focus:not([readonly]),
@@ -9682,11 +9685,16 @@ input[type=datetime]:not(.browser-default):focus:not([readonly]),
 input[type=datetime-local]:not(.browser-default):focus:not([readonly]),
 input[type=tel]:not(.browser-default):focus:not([readonly]),
 input[type=number]:not(.browser-default):focus:not([readonly]),
-input[type=search]:not(.browser-default):focus:not([readonly]),
 textarea.materialize-textarea:focus:not([readonly]) {
   border-bottom: 1px solid #C0A660;
   -webkit-box-shadow: 0 1px 0 0 #C0A660;
   box-shadow: 0 1px 0 0 #C0A660;
+}
+
+input[type=search]:not(.browser-default):focus:not([readonly]) {
+  border-bottom: 1px solid transparent;
+  -webkit-box-shadow: 0 1px 0 0 transparent;
+  box-shadow: 0 1px 0 0 transparent;
 }
 
 .unadeca-btn,
@@ -9719,6 +9727,26 @@ textarea.materialize-textarea:focus:not([readonly]) {
 .dropdown-content li > a,
 .dropdown-content li > span {
   color: #002D62;
+}
+
+.v-select {
+  background: #fff;
+}
+
+[type="radio"]:checked + span:after,
+[type="radio"].with-gap:checked + span:after {
+  background-color: #C0A660;
+}
+
+[type="radio"]:checked + span:after,
+[type="radio"].with-gap:checked + span:before,
+[type="radio"].with-gap:checked + span:after {
+  border: 2px solid #C0A660;
+}
+
+[type="checkbox"]:checked + span:not(.lever):before {
+  border-right: 2px solid #C0A660;
+  border-bottom: 2px solid #C0A660;
 }
 
 .feather-card {
@@ -9909,7 +9937,6 @@ textarea.materialize-textarea:focus:not([readonly]) {
 
 .home .row .home-body .body-content .body-content-item .body-content-item-title span,
 .home .col .home-body .body-content .body-content-item .body-content-item-title span {
-  font-size: 12px;
   color: #9FA3AD;
 }
 

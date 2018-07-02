@@ -9,6 +9,7 @@
                 <span>Crear un nuevo Cuatrimestre</span>
             </div>
             <div class="body-content-item-body">
+                @include('errors.message')
                 {!! Form::open(['route' => 'quarters.store']) !!}
                     @include('quarters.partials.form')
                 {!! Form::close() !!}

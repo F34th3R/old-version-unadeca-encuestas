@@ -1,7 +1,7 @@
 @extends('layouts.home')
 @section('home_content')
     <div class="body-header feather-card">
-        <span>Rubros</span>
+        <span>Cuatrimestre</span>
     </div>
     <div class="body-content feather-card">
         <div class="body-content-item">
@@ -10,7 +10,7 @@
             </div>
             <div class="body-content-item-body">
                 {!! Form::model($quarter, ['route' => ['quarters.update', $quarter->id], 'method' => 'PUT']) !!}
-                @include('quarters.partials.form')
+                    @include('quarters.partials.form')
                 {!! Form::close() !!}
             </div>
         </div>

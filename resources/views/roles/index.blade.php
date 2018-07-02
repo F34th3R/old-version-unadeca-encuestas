@@ -42,11 +42,11 @@
                                 </td>
                                 <td>
                                     @can('roles.destroy')
-                                        <form action="{{ route('roles.destroy', $role->id) }}" method="DELETE">
-                                            <button class="waves-effect waves-light btn btn-flat disabled">
+                                        {!! Form::open(['route' => ['roles.destroy', $role->id], 'method' => 'DELETE']) !!}
+                                            <button class="waves-effect waves-light btn btn-flat">
                                                 <i class="material-icons">delete</i>
                                             </button>
-                                        </form>
+                                        {!! Form::close() !!}
                                     @endcan
                                 </td>
                             @else
@@ -67,11 +67,11 @@
                                 </td>
                                 <td>
                                     @can('roles.destroy')
-                                        <form action="{{ route('roles.destroy', $role->id) }}" method="DELETE">
-                                            <button class="waves-effect waves-light btn btn-flat">
-                                                <i class="material-icons">delete</i>
-                                            </button>
-                                        </form>
+                                        {!! Form::open(['route' => ['roles.destroy', $role->id], 'method' => 'DELETE']) !!}
+                                        <button class="waves-effect waves-light btn btn-flat">
+                                            <i class="material-icons">delete</i>
+                                        </button>
+                                        {!! Form::close() !!}
                                     @endcan
                                 </td>
                             @endif

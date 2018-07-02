@@ -21,18 +21,18 @@
                         @if($poll->isTemplate == 'true')
                             <tr>
                                 <td>{{ $poll->titles->title}}</td>
+                                {{--<td>--}}
+                                    {{--@can('polls.create')--}}
+                                        {{--<a href="{{ route('polls.template.create', $poll->id) }}" class="waves-effect waves-light btn btn-flat">--}}
+                                            {{--<i class="material-icons">add</i>--}}
+                                        {{--</a>--}}
+                                    {{--@endcan--}}
+                                {{--</td>--}}
                                 <td>
                                     @can('polls.create')
-                                        <a href="{{ route('polls.template.create', $poll->id) }}" class="waves-effect waves-light btn btn-flat">
-                                            <i class="material-icons">add</i>
-                                        </a>
-                                    @endcan
-                                </td>
-                                <td>
-                                    @can('polls.create')
-                                        <a href="{{ route('polls.create', $poll->id) }}" class="waves-effect waves-light btn btn-flat disabled">
-                                            {{--<i class="material-icons">ac_unit</i>--}}
-                                            <i class="material-icons">add</i>
+                                        <a href="{{ route('polls.create', $poll->id) }}" class="waves-effect waves-light btn btn-flat">
+                                            <i class="material-icons">ac_unit</i>
+                                            {{--<i class="material-icons">add</i>--}}
                                         </a>
                                     @endcan
                                 </td>

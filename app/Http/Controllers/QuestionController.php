@@ -2,85 +2,75 @@
 
 namespace App\Http\Controllers;
 
+use App\Item;
 use App\Question;
 use Illuminate\Http\Request;
 
 class QuestionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        $questions = Question::get();
+        $questions = Question::paginate();
         return view('questions.index', compact('questions'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
-        //
+        $items = Item::get();
+        return view('questions.create', compact('items'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'question' => 'required',
+        ]);
+        return view('questions.idex')->with('message', 'La pregunta fue creada exitosamente.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Question  $question
-     * @return \Illuminate\Http\Response
-     */
     public function show(Question $question)
     {
-        //
+        $items = Item::whereHas('questions', function ($query) use($question) {
+            $query->where('question_id', $question->id);
+        })->get();
+        return view('questions.show', compact('question', 'items'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Question  $question
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Question $question)
     {
-        //
+        $items = Item::get();
+        return view('questions.edit', compact('question', 'items'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Question  $question
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Question $question)
     {
-        //
+        $this->validate($request, [
+            'question' => 'required',
+        ]);
+        $question->update($request->all());
+        $question->items()->sync($request->get('items'));
+        return redirect()->route('questions.show', $question->id)->with('message', 'La pregunta se actualizo correctamente.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Question  $question
-     * @return \Illuminate\Http\Response
-     */
+    public function delete(Question $question)
+    {
+        $items = Item::whereHas('questions', function ($query) use($question) {
+            $query->where('question_id', $question->id);
+        })->get();
+        return view('questions.delete', compact('question', 'items'));
+    }
+
     public function destroy(Question $question)
     {
-        //
+        try {
+            $question->delete();
+        } catch (\Exception $e) {
+            return redirect()->route('quarters.show', $question->id)
+                ->with('error', 'No se puede eliminar esta pregunta.');
+        }
+        return redirect()->route('quarters.index')->with('message', 'La pregunta fue eliminada exitosamente.');
     }
 }

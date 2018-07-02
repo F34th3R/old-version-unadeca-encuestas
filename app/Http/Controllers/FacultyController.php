@@ -13,20 +13,16 @@ class FacultyController extends Controller
 
     public function index()
     {
-        $faculties = Faculty::get();
+        $faculties = Faculty::paginate();
         return view('faculties.index', compact('faculties'));
     }
 
     public function create()
     {
-        $user = new User;
         $subjects = Subject::get();
-//        $professors = User::where('faculties_id', 'like', $request->faculty_id)->get();
-        $professors = DB::table('role_user')
-            ->join('users', 'users.id', '=', 'role_user.user_id')
-            ->select('role_user.id', 'users.*')
-            ->where(['role_user.role_id' => 4])
-            ->get();
+        $professors = User::whereHas('roles', function ($query) {
+            $query->where(['role_id' => 4]);
+        })->get();
         return view('faculties.create', compact('subjects', 'professors'));
     }
 
@@ -34,30 +30,27 @@ class FacultyController extends Controller
     {
         $this->validate($request,[
             'name' => 'required|string',
-            'professors' => 'required',
         ]);
         $faculty = Faculty::create([
             'name' => $request->name,
         ]);
-        $faculty->users->sync($request->get('professors'));
         return redirect()->route('faculties.index');
     }
 
     public function show(Faculty $faculty)
     {
-        $mySubjects = DB::table('faculty_subject')
-            ->join('subjects', 'subjects.id', '=', 'faculty_subject.subject_id')
-            ->select('faculty_subject.*', 'subjects.*')
-            ->where(['faculty_subject.faculty_id' => $faculty->id])
-            ->get();
-        $faculties = Faculty::where('id', 'like', $faculty->id)->get();
-        $professors = DB::table('role_user')
-            ->join('users', 'users.id', '=', 'role_user.user_id')
-            ->select('role_user.id', 'users.*')
-            ->where(['role_user.role_id' => 4])
-            ->where('users.faculties_id', 'like', $faculty->id)
-            ->get();
-        return view('faculties.show', compact('faculty', 'faculties', 'professors'));
+        $subjects = Subject::whereHas('faculties', function ($query) use($faculty) {
+            $query->where('faculty_id', $faculty->id);
+        })->get();
+        $professors = User::whereHas('roles', function ($query) {
+            $query->where(['role_id' => 4]);
+        })->where(['faculties_id' => $faculty->id])->get();
+
+        $students = User::whereHas('roles', function ($query) {
+            $query->where('role_id', 3);
+        })->where('faculties_id', $faculty->id)->get();
+
+        return view('faculties.show', compact('faculty', 'subjects', 'professors', 'students'));
     }
 
     public function edit(Faculty $faculty)
@@ -77,16 +70,25 @@ class FacultyController extends Controller
             ->with('info', 'The faculty was saved successful');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Faculty $faculty
-     * @return \Illuminate\Http\Response
-     * @throws \Exception
-     */
+    public function delete(Faculty $faculty)
+    {
+        $subjects = Subject::whereHas('faculties', function ($query) use($faculty) {
+            $query->where('faculty_id', $faculty->id);
+        })->get();
+        $professors = User::whereHas('roles', function ($query) {
+            $query->where(['role_id' => 4]);
+        })->where(['faculties_id' => $faculty->id])->get();
+        return view('faculties.delete', compact('faculty', 'professors', 'subjects'));
+    }
+
     public function destroy(Faculty $faculty)
     {
-        $faculty->delete();
+        try {
+            $faculty->delete();
+        }catch (\Exception $e) {
+            return redirect()->route('faculties.show', $faculty->id)
+                ->with('error', 'No se puede eliminar esta facultad.');
+        }
         return redirect()->route('faculties.index', $faculty->id)
             ->with('info', 'The faculty was deleted successful');
     }

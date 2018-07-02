@@ -46,9 +46,4 @@ class User extends Authenticatable
     {
         return $this->belongsToMany('App\Poll')->withTimestamps();
     }
-
-    public function facultiess()
-    {
-        return $this->belongsToMany('App\User')->withTimestamps();
-    }
 }

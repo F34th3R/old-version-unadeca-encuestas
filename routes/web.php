@@ -28,7 +28,7 @@ Route::middleware(['auth'])->group(function (){
     Route::get('/home/my', 'HomeController@my')->name('home.my');
     Route::get('/home/my/{user}', 'HomeController@store')->name('home.update');
 
-    Route::get('/f34th3r/{type}/{id?}/{key}', 'ApiController@getData')->name('api')
+    Route::post('/f34th3r/3117/', 'ApiController@getData')->name('api')
     ->middleware('permission:admin');
 
     // Users
@@ -64,7 +64,7 @@ Route::middleware(['auth'])->group(function (){
         ->middleware('permission:questions.create');
 
     Route::post('questions/store', 'QuestionController@store')->name('questions.store')
-        ->middleware('permission:questions.create');
+        ->middleware('permission:questions.store');
 
     Route::get('questions/{question}/edit', 'QuestionController@edit')->name('questions.edit')
         ->middleware('permission:questions.edit');
@@ -72,10 +72,11 @@ Route::middleware(['auth'])->group(function (){
     Route::put('questions/{question}', 'QuestionController@update')->name('questions.update')
         ->middleware('permission:questions.edit');
 
-    Route::delete('questions/{question}', 'QuestionController@destroy')->name('questions.destroy')
+    Route::get('questions/{question}/delete', 'QuestionController@delete')->name('questions.delete')
         ->middleware('permission:questions.destroy');
 
-    // Test Poll Vue
+    Route::delete('questions/{question}', 'QuestionController@destroy')->name('questions.destroy')
+        ->middleware('permission:questions.destroy');
 
     //Template
     Route::get('polls/template', 'TemplateController@index')->name('polls.template.index')
@@ -92,9 +93,6 @@ Route::middleware(['auth'])->group(function (){
 
     // Polls
     Route::get('polls/', 'PollController@index')->name('polls.index')
-        ->middleware('permission:polls.index');
-
-    Route::get('polls/subjects/{faculty}', 'PollController@getSubjects')->name('polls.get.subjects')
         ->middleware('permission:polls.index');
 
     Route::get('polls/{poll}/create', 'PollController@create')->name('polls.create')
@@ -222,6 +220,9 @@ Route::middleware(['auth'])->group(function (){
     Route::put('faculties/{faculty}', 'FacultyController@update')->name('faculties.update')
         ->middleware('permission:faculties.edit');
 
+    Route::get('faculties/{faculty}/delete', 'FacultyController@delete')->name('faculties.delete')
+        ->middleware('permission:faculties.destroy');
+
     Route::delete('faculties/{faculty}', 'FacultyController@destroy')->name('faculties.destroy')
         ->middleware('permission:faculties.destroy');
 
@@ -243,6 +244,9 @@ Route::middleware(['auth'])->group(function (){
 
     Route::put('subjects/{subject}', 'SubjectController@update')->name('subjects.update')
         ->middleware('permission:subjects.edit');
+
+    Route::get('subjects/{subject}/delete', 'SubjectController@delete')->name('subjects.delete')
+        ->middleware('permission:subjects.destroy');
 
     Route::delete('subjects/{subject}', 'SubjectController@destroy')->name('subjects.destroy')
         ->middleware('permission:subjects.destroy');
@@ -307,13 +311,16 @@ Route::middleware(['auth'])->group(function (){
     Route::get('rubros/{item}/edit', 'ItemController@edit')->name('rubros.edit')
         ->middleware('permission:rubros.edit');
 
+    Route::get('rubros/{item}/delete', 'ItemController@delete')->name('rubros.delete')
+        ->middleware('permission:rubros.destroy');
+
     Route::put('rubros/{item}', 'ItemController@update')->name('rubros.update')
         ->middleware('permission:rubros.edit');
 
     Route::delete('rubros/{item}', 'ItemController@destroy')->name('rubros.destroy')
         ->middleware('permission:rubros.destroy');
 
-    // Quarters (Rubros)
+    // Quarters (Cuatrimestres)
     Route::get('quarters/', 'QuarterController@index')->name('quarters.index')
         ->middleware('permission:quarters.index');
 
@@ -331,6 +338,9 @@ Route::middleware(['auth'])->group(function (){
 
     Route::put('quarters/{quarter}', 'QuarterController@update')->name('quarters.update')
         ->middleware('permission:quarters.edit');
+
+    Route::get('quarters/{quarter}/delete', 'QuarterController@delete')->name('quarters.delete')
+        ->middleware('permission:quarters.destroy');
 
     Route::delete('quarters/{quarter}', 'QuarterController@destroy')->name('quarters.destroy')
         ->middleware('permission:quarters.destroy');

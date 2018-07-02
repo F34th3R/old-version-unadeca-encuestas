@@ -6,17 +6,45 @@
     <div class="body-content feather-card">
         <div class="body-content-item">
             <div class="body-content-item-title">
-                <span>Datos del Rubro</span>
-                @can('users.edit')
-                    <div class="right-align">
-                        <a href="{{ route('faculties.edit', $item->id) }}" class="btn-flat">
-                            <i class="material-icons">create</i>
-                        </a>
+                <div class="row">
+                    <div class="col s10 left-align">
+                        <span>Datos de la materia</span>
                     </div>
-                @endcan
+                    <div class="right-align">
+                        <div class="col s1">
+                            @can('rubros.edit')
+                                <a href="{{ route('rubros.edit', $item->id) }}" class="btn-flat">
+                                    <i class="material-icons">create</i>
+                                </a>
+                            @endcan
+                        </div>
+                        <div class="col s1">
+                            @can('rubros.destroy')
+                                {!! Form::open(['route' => ['rubros.destroy', $item->id], 'method' => 'DELETE']) !!}
+                                <button class="waves-effect waves-light btn btn-flat">
+                                    <i class="material-icons">delete</i>
+                                </button>
+                                {!! Form::close() !!}
+                            @endcan
+                        </div>
+                    </div>
+                </div>
+                @include('errors.message')
             </div>
             <div class="body-content-item-body">
                 <p><strong>Name:</strong> {{ $item->name }}</p>
+            </div>
+        </div>
+        <div class="body-content-item">
+            <div class="body-content-item-title">
+                <span>Preguntas que pertenecen a los rubros</span>
+            </div>
+            <div class="body-content-item-body">
+                <ul class="collection">
+                    @foreach($questions as $question)
+                        <li class="collection-item">{{ $question->question }}</li>
+                    @endforeach
+                </ul>
             </div>
         </div>
     </div>

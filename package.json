@@ -19,6 +19,7 @@
         "vue": "^2.5.7"
     },
     "dependencies": {
-        "materialize-css": "^1.0.0-beta"
+        "materialize-css": "^1.0.0-beta",
+        "vue-select": "^2.4.0"
     }
 }

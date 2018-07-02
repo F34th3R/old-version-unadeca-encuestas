@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Item;
+use App\Question;
 use Illuminate\Http\Request;
 
 class ItemController extends Controller
@@ -18,79 +19,61 @@ class ItemController extends Controller
         return view('rubros.index', compact('rubros'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        return view('rubros.create');
+        $questions = Question::get();
+        return view('rubros.create', compact('questions'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $this->validate($request, [
             'name' => 'required'
         ]);
-        Item::create($request->all());
+        $item = Item::create($request->all());
+        $item->questions()->sync($request->get('questions'));
         return redirect()->route('rubros.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Item  $item
-     * @return \Illuminate\Http\Response
-     */
     public function show(Item $item)
     {
-        return view('rubros.show', compact('item'));
+        $questions = Question::whereHas('items', function ($query) use($item) {
+            $query->where('item_id', $item->id);
+        })->get();
+        return view('rubros.show', compact('item', 'questions'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Item  $item
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Item $item)
     {
-        return view('rubros.edit', compact('item'));
+        $questions = Question::get();
+        return view('rubros.edit', compact('item', 'questions'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Item  $item
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Item $item)
     {
         $this->validate($request, [
             'name' => 'required',
         ]);
         $item->update($request->all());
-        return redirect()->route('rubros.show', $item->id)->with('info', 'El rubro fue actualizado exitosamente');
+        $item->questions()->sync($request->get('questions'));
+        return redirect()->route('rubros.show', $item->id)->with('message', 'El rubro fue actualizado exitosamente.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Item $item
-     * @return \Illuminate\Http\Response
-     * @throws \Exception
-     */
+    public function delete(Item $item)
+    {
+        $questions = Question::whereHas('items', function ($query) use($item) {
+            $query->where('item_id', $item->id);
+        })->get();
+        return view('rubros.delete', compact('item', 'questions'));
+    }
+
     public function destroy(Item $item)
     {
-        $item->delete();
-        return redirect()->route('rubros.index', $item->id)->with('info', 'El rubro fue eliminado exitosamente');
+        try {
+            $item->delete();
+        } catch (\Exception $e) {
+            return redirect()->route('rubros.show', $item->id)->with('error', 'El rubro no se puede eliminar.');
+        }
+        return redirect()->route('rubros.index', $item->id)->with('message', 'El rubro fue eliminado exitosamente.');
     }
 }
